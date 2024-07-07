@@ -1,0 +1,51 @@
+"""Test utility methods in qthemes/util.py."""
+
+import pytest
+
+from qthemes._util import analyze_version_str, multi_replace
+
+
+def test_multi_replace() -> None:
+    """Test `multi_replace()`."""
+    target = "Dark theme for PySide and PyQt."
+    empty = {}
+    multi_replace(target, empty)
+
+    replacements = {"Dark": "Light", "PySide": "PyQt", "PyQt": "PySide"}
+    multi_replace(target, replacements)
+
+
+def test_analyze_version_str() -> None:
+    """Test `analyze_version_str()`."""
+    # Test "=="
+    assert analyze_version_str(target_version="5.0.0", version_text="==5.0.0")
+    assert not analyze_version_str(target_version="5.1.2", version_text="==5.0.0")
+    # Test "!="
+    assert analyze_version_str(target_version="5.0.0", version_text="!=6.0.1")
+    assert not analyze_version_str(target_version="6.0.1", version_text="!=6.0.1")
+    # Test ">="
+    assert analyze_version_str(target_version="5.12.0", version_text=">=5.10.5")
+    assert analyze_version_str(target_version="5.10.5", version_text=">=5.10.5")
+    assert not analyze_version_str(target_version="5.9.1", version_text=">=5.10.5")
+    # Test ">"
+    assert analyze_version_str(target_version="5.12.0", version_text=">5.10.5")
+    assert not analyze_version_str(target_version="5.10.5", version_text=">5.10.5")
+    assert not analyze_version_str(target_version="5.9.1", version_text=">5.10.5")
+    # Test "<="
+    assert analyze_version_str(target_version="6.2.2", version_text="<=6.3.1")
+    assert analyze_version_str(target_version="6.3.1", version_text="<=6.3.1")
+    assert not analyze_version_str(target_version="6.4.0", version_text="<=6.3.1")
+    # Test "<"
+    assert analyze_version_str(target_version="6.2.2", version_text="<6.3.1")
+    assert not analyze_version_str(target_version="6.3.1", version_text="<6.3.1")
+    assert not analyze_version_str(target_version="6.4.0", version_text="<6.3.1")
+
+
+@pytest.mark.parametrize(
+    ("target_version", "version_text"),
+    [("6.2.2", "5.12.0"), ("6.2.2", "a5.12.0"), ("6.2.2", "-5.12.0")],
+)
+def test_analyze_wrong_version_str(target_version, version_text) -> None:
+    """Verify we raise ValueError when using wrong version_str."""
+    with pytest.raises(AssertionError):
+        analyze_version_str(target_version, version_text)
