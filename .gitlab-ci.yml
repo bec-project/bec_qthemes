@@ -68,7 +68,7 @@ formatter:
   rules:
     - if: $CI_PROJECT_PATH == "bec/bec_qthemes"
 
-test-matrix:
+tests:
   parallel:
     matrix:
       - PYTHON_VERSION:
