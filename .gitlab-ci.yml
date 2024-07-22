@@ -53,9 +53,9 @@ stages:
   - *install-qt-webengine-deps
 
 before_script:
-  - if [[ "$CI_PROJECT_PATH" != "bec/bec_widgets" ]]; then
-    echo -e "\033[35;1m Using branch $CHILD_PIPELINE_BRANCH of BEC Widgets \033[0;m";
-    test -d bec_widgets || git clone --branch $CHILD_PIPELINE_BRANCH https://gitlab.psi.ch/bec/bec_widgets.git; cd bec_widgets;
+  - if [[ "$CI_PROJECT_PATH" != "bec/bec_qthemes" ]]; then
+    echo -e "\033[35;1m Using branch $CHILD_PIPELINE_BRANCH of BEC QThemes \033[0;m";
+    test -d bec_qthemes || git clone --branch $CHILD_PIPELINE_BRANCH https://gitlab.psi.ch/bec/bec_qthemes.git; cd bec_qthemes;
     fi
 
 formatter:
@@ -66,62 +66,7 @@ formatter:
     - isort --check --diff ./
     - black --check --diff --color ./
   rules:
-    - if: $CI_PROJECT_PATH == "bec/bec_widgets"
-
-pylint:
-  stage: Formatter
-  needs: []
-  before_script:
-    - pip install pylint pylint-exit anybadge
-    - pip install -e .[dev,pyqt6]
-  script:
-    - mkdir ./pylint
-    - pylint ./bec_widgets --output-format=text --output=./pylint/pylint.log | tee ./pylint/pylint.log || pylint-exit $?
-    - PYLINT_SCORE=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' ./pylint/pylint.log)
-    - anybadge --label=Pylint --file=pylint/pylint.svg --value=$PYLINT_SCORE 2=red 4=orange 8=yellow 10=green
-    - echo "Pylint score is $PYLINT_SCORE"
-  artifacts:
-    paths:
-      - ./pylint/
-    expire_in: 1 week
-  rules:
-    - if: $CI_PROJECT_PATH == "bec/bec_widgets"
-
-pylint-check:
-  stage: Formatter
-  needs: []
-  allow_failure: true
-  before_script:
-    - pip install pylint pylint-exit anybadge
-    - apt-get update
-    - apt-get install -y bc
-  script:
-    - git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
-    # Identify changed Python files
-    - if [ "$CI_PIPELINE_SOURCE" == "merge_request_event" ]; then
-      TARGET_BRANCH_COMMIT_SHA=$(git rev-parse origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME);
-      CHANGED_FILES=$(git diff --name-only $TARGET_BRANCH_COMMIT_SHA HEAD | grep '\.py$' || true);
-      else
-      CHANGED_FILES=$(git diff --name-only $CI_COMMIT_BEFORE_SHA $CI_COMMIT_SHA | grep '\.py$' || true);
-      fi
-    - if [ -z "$CHANGED_FILES" ]; then echo "No Python files changed."; exit 0; fi
-
-    - echo "Changed Python files:"
-      - $CHANGED_FILES
-    # Run pylint only on changed files
-    - mkdir ./pylint
-    - pylint $CHANGED_FILES --output-format=text | tee ./pylint/pylint_changed_files.log || pylint-exit $?
-    - PYLINT_SCORE=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' ./pylint/pylint_changed_files.log)
-    - echo "Pylint score is $PYLINT_SCORE"
-
-    # Fail the job if the pylint score is below 9
-    - if [ "$(echo "$PYLINT_SCORE < 9" | bc)" -eq 1 ]; then echo "Your pylint score is below the acceptable threshold (9)."; exit 1; fi
-  artifacts:
-    paths:
-      - ./pylint/
-    expire_in: 1 week
-  rules:
-    - if: $CI_PROJECT_PATH == "bec/bec_widgets"
+    - if: $CI_PROJECT_PATH == "bec/bec_qthemes"
 
 test-matrix:
   parallel:
@@ -134,7 +79,7 @@ test-matrix:
           - "pyside6"
           - "pyqt6"
 
-  stage: tests
+  stage: test
   needs: []
   variables:
     QT_QPA_PLATFORM: "offscreen"
