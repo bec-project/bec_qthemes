@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.0.2 (2024-07-22)
+
+### Fix
+
+* fix: removed webengine deps ([`2b887ff`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/2b887ffabc6932ffc3b8518ba065223f828c2f88))
+
 ## v0.0.1 (2024-07-22)
 
 ### Ci
