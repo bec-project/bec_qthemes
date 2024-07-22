@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from importlib import resources
 from pathlib import Path
 
-from qthemes._color import Color
+from bec_qthemes._color import Color
 from tools._util import get_style_path
 
 _DEFAULT_DARK_COLORS: dict = json.loads((get_style_path() / "colors/themes/dark.json").read_bytes())

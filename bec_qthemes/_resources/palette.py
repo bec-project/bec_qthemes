@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from functools import partial
 
-from qthemes._template.engine import Template
+from bec_qthemes._template.engine import Template
 
 
 def q_palette(

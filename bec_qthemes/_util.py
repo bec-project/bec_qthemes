@@ -8,7 +8,7 @@ import operator as ope
 import re
 from pathlib import Path
 
-import qthemes
+import bec_qthemes
 
 # greater_equal and less_equal must be evaluated before greater and less.
 _OPERATORS = {"==": ope.eq, "!=": ope.ne, ">=": ope.ge, "<=": ope.le, ">": ope.gt, "<": ope.lt}
@@ -64,7 +64,7 @@ def get_qthemes_root_path() -> Path:
     Returns:
         qthemes package root path.
     """
-    return Path(inspect.getfile(qthemes)).parent
+    return Path(inspect.getfile(bec_qthemes)).parent
 
 
 def _compare_v(v1: str, operator: str, v2: str) -> bool:

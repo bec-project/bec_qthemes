@@ -4,8 +4,8 @@ from unittest import mock
 
 import pytest
 
-from qthemes._color import Color
-from qthemes._icon.svg import Svg
+from bec_qthemes._color import Color
+from bec_qthemes._icon.svg import Svg
 
 
 @pytest.mark.parametrize(

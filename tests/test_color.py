@@ -4,7 +4,7 @@ import re
 
 import pytest
 
-from qthemes._color import _HSLA, _RGBA, Color
+from bec_qthemes._color import _HSLA, _RGBA, Color
 
 
 @pytest.mark.parametrize(

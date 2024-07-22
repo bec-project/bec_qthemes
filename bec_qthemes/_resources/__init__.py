@@ -7,6 +7,6 @@ Created by the `PyQtDarkTheme/tools/build_styles`.
 
 """
 
-from qthemes._resources import colors, palette, stylesheets, svg
+from bec_qthemes._resources import colors, palette, stylesheets, svg
 
 THEMES = ("dark", "light", "auto")

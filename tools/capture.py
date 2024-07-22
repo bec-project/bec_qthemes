@@ -11,8 +11,8 @@ from qtpy.QtCore import QTimer, Slot
 from qtpy.QtGui import QGuiApplication
 from qtpy.QtWidgets import QApplication
 
-import qthemes
-from qthemes.widget_gallery.main_window import WidgetGallery
+import bec_qthemes
+from bec_qthemes.widget_gallery.main_window import WidgetGallery
 
 
 def _parse_args() -> argparse.Namespace:
@@ -30,10 +30,10 @@ class _Application(QApplication):
 
     @Slot()
     def _capture_window_img(self) -> None:
-        for theme in qthemes.get_themes():
+        for theme in bec_qthemes.get_themes():
             if theme == "auto":
                 continue
-            qthemes.setup_theme(theme)
+            bec_qthemes.setup_theme(theme)
             self._gallery.setGeometry(QGuiApplication.primaryScreen().geometry())
             self._gallery.grab().save(f"{self._img_name}-{theme}.png")
         self.exit()

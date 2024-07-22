@@ -6,10 +6,10 @@ import platform
 
 from qtpy.QtCore import qVersion
 
-from qthemes import __version__
-from qthemes._color import Color
-from qthemes._icon.svg import Svg
-from qthemes._util import analyze_version_str, get_cash_root_path, get_logger
+from bec_qthemes import __version__
+from bec_qthemes._color import Color
+from bec_qthemes._icon.svg import Svg
+from bec_qthemes._util import analyze_version_str, get_cash_root_path, get_logger
 
 _logger = get_logger(__name__)
 

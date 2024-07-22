@@ -2,7 +2,7 @@
 
 import pytest
 
-from qthemes._util import analyze_version_str, multi_replace
+from bec_qthemes._util import analyze_version_str, multi_replace
 
 
 def test_multi_replace() -> None:

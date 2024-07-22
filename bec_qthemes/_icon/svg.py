@@ -4,8 +4,8 @@ import json
 import re
 from functools import lru_cache
 
-from qthemes import _resources
-from qthemes._color import Color
+from bec_qthemes import _resources
+from bec_qthemes._color import Color
 
 
 @lru_cache()

@@ -5,7 +5,7 @@ import logging
 import sys
 from importlib.metadata import version
 
-import qthemes
+import bec_qthemes
 
 logging.basicConfig(level=logging.INFO)
 
@@ -17,21 +17,21 @@ def _parse_args() -> argparse.Namespace:
 
 
 def _test_qthemes() -> None:
-    for theme in qthemes.get_themes():
-        qthemes.load_stylesheet(theme)
+    for theme in bec_qthemes.get_themes():
+        bec_qthemes.load_stylesheet(theme)
 
 
 def _main() -> None:
     args = _parse_args()
     git_tag_v: str = args.tag_version.replace("v", "")
     package_v = version("pyqtdarktheme")
-    if git_tag_v == package_v == qthemes.__version__:
+    if git_tag_v == package_v == bec_qthemes.__version__:
         logging.info("The package version, module version and tag version are the same.")
     else:
         logging.info("The version names of package and tag are different.")
         logging.info("tag version(GitHub tags)         : ", git_tag_v)
         logging.info("package version(pyproject.toml)  : ", package_v)
-        logging.info("module version(__version__)      : ", qthemes.__version__)
+        logging.info("module version(__version__)      : ", bec_qthemes.__version__)
         sys.exit(1)
 
     _test_qthemes()

@@ -5,7 +5,7 @@ from unittest import mock
 
 import pytest
 
-import qthemes
+import bec_qthemes
 
 
 @pytest.mark.parametrize(
@@ -41,7 +41,7 @@ import qthemes
 )
 def test_load_stylesheet(theme, corner_shape, custom_colors) -> None:
     """Verify that the function `load_stylesheet()` runs successfully when using various arguments."""
-    qthemes.load_stylesheet(theme, corner_shape, custom_colors)
+    bec_qthemes.load_stylesheet(theme, corner_shape, custom_colors)
 
 
 def test_load_stylesheet_with_wrong_theme() -> None:
@@ -49,13 +49,13 @@ def test_load_stylesheet_with_wrong_theme() -> None:
     with pytest.raises(
         ValueError, match='invalid argument, not a dark, light or auto: "wrong_value"'
     ):
-        qthemes.load_stylesheet("wrong_value")
+        bec_qthemes.load_stylesheet("wrong_value")
 
 
 def test_load_stylesheet_with_wrong_corner_shape() -> None:
     """Verify we raise ValueError when using wrong corner shape name."""
     with pytest.raises(ValueError, match='invalid argument, not a rounded or sharp: "wrong_value"'):
-        qthemes.load_stylesheet(corner_shape="wrong_value")
+        bec_qthemes.load_stylesheet(corner_shape="wrong_value")
 
 
 def test_load_stylesheet_with_wrong_color_format() -> None:
@@ -69,7 +69,7 @@ def test_load_stylesheet_with_wrong_color_format() -> None:
             "(0-9, a-f or A-F)."
         ),
     ):
-        qthemes.load_stylesheet(custom_colors={"input.background": "wrong color code"})
+        bec_qthemes.load_stylesheet(custom_colors={"input.background": "wrong color code"})
 
 
 def test_load_stylesheet_with_wrong_custom_colors() -> None:
@@ -80,7 +80,7 @@ def test_load_stylesheet_with_wrong_custom_colors() -> None:
             'invalid value for argument custom_colors, not a dict type: "#1234" of "[dark]" key.'
         ),
     ):
-        qthemes.load_stylesheet(custom_colors={"[dark]": "#1234"})
+        bec_qthemes.load_stylesheet(custom_colors={"[dark]": "#1234"})
 
 
 @pytest.mark.parametrize(
@@ -90,21 +90,21 @@ def test_load_stylesheet_with_wrong_custom_colors() -> None:
 def test_load_stylesheet_with_wrong_color_id(wrong_color_id) -> None:
     """Verify we raise ValueError when using wrong color id."""
     with pytest.raises(KeyError):
-        qthemes.load_stylesheet(custom_colors={wrong_color_id: "#121212"})
+        bec_qthemes.load_stylesheet(custom_colors={wrong_color_id: "#121212"})
 
 
 def test_load_stylesheet_when_failing_to_detect_system_theme() -> None:
     """Verify `load_stylesheet(theme="auto")` works when failing to detect system theme."""
     with mock.patch("darkdetect.theme", return_value=None):
-        qthemes.load_stylesheet("auto")
+        bec_qthemes.load_stylesheet("auto")
 
 
 def test_clear_cache() -> None:
     """Verify `clear_cache()`."""
-    qthemes.load_stylesheet()
-    qthemes.clear_cache()
+    bec_qthemes.load_stylesheet()
+    bec_qthemes.clear_cache()
     # Test function when there is no cache.
-    qthemes.clear_cache()
+    bec_qthemes.clear_cache()
 
 
 def test_get_themes() -> None:
@@ -112,4 +112,4 @@ def test_get_themes() -> None:
 
     get_themes() is not called from other functions, so it should be tested.
     """
-    qthemes.get_themes()
+    bec_qthemes.get_themes()

@@ -6,10 +6,10 @@ import json
 import shutil
 from functools import partial
 
-from qthemes import __version__, _os_appearance, _resources
-from qthemes._template import filter
-from qthemes._template.engine import Template
-from qthemes._util import get_cash_root_path, get_logger
+from bec_qthemes import __version__, _os_appearance, _resources
+from bec_qthemes._template import filter
+from bec_qthemes._template.engine import Template
+from bec_qthemes._util import get_cash_root_path, get_logger
 
 _logger = get_logger(__name__)
 

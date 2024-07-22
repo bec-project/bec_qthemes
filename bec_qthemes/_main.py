@@ -6,14 +6,14 @@ import platform
 
 import darkdetect
 
-from qthemes._style_loader import load_palette, load_stylesheet
+from bec_qthemes._style_loader import load_palette, load_stylesheet
 
 _listener = None
 _proxy_style = None
 
 
 def _apply_style(app, additional_qss: str | None, **kargs) -> None:
-    from qthemes._proxy_style import qthemesStyle
+    from bec_qthemes._proxy_style import qthemesStyle
 
     stylesheet = load_stylesheet(**kargs)
     if additional_qss is not None:
@@ -36,7 +36,7 @@ def _apply_style(app, additional_qss: str | None, **kargs) -> None:
 
 
 def _sync_theme_with_system(app, callback) -> None:
-    from qthemes._os_appearance import listener
+    from bec_qthemes._os_appearance import listener
 
     global _listener
     if _listener is not None:

@@ -2,8 +2,8 @@ from qtpy.QtCore import QPoint, QRect, QRectF, QSize, Qt
 from qtpy.QtGui import QGuiApplication, QIcon, QIconEngine, QImage, QPainter, QPalette, QPixmap
 from qtpy.QtSvg import QSvgRenderer
 
-from qthemes._color import Color
-from qthemes._icon.svg import Svg
+from bec_qthemes._color import Color
+from bec_qthemes._icon.svg import Svg
 
 
 class SvgIconEngine(QIconEngine):

@@ -7,7 +7,7 @@ from unittest import mock
 import pytest
 from qtpy.QtGui import QGuiApplication, QPalette
 
-import qthemes
+import bec_qthemes
 
 
 @pytest.mark.parametrize(
@@ -35,17 +35,17 @@ import qthemes
 )
 def test_load_palette(theme, custom_colors) -> None:
     """Verify that the function `load_stylesheet()` runs successfully when using various arguments."""
-    qthemes.load_palette(theme, custom_colors)
+    bec_qthemes.load_palette(theme, custom_colors)
 
 
 def test_apply_stylesheet_to_qt_app(qapp: QGuiApplication) -> None:
     """Verify that the function `load_stylesheet()` runs without error."""
-    qapp.setStyleSheet(qthemes.load_stylesheet())  # type: ignore
+    qapp.setStyleSheet(bec_qthemes.load_stylesheet())  # type: ignore
 
 
 def test_apply_palette_to_qt_app(qapp: QGuiApplication) -> None:
     """Verify that the function `load_palette()` runs without error."""
-    qapp.setPalette(qthemes.load_palette())
+    qapp.setPalette(bec_qthemes.load_palette())
 
 
 @pytest.mark.parametrize(
@@ -53,18 +53,18 @@ def test_apply_palette_to_qt_app(qapp: QGuiApplication) -> None:
 )
 def test_setup_theme(qapp, theme, additional_qss) -> None:
     """Verify that the function `setup_theme()` runs without error."""
-    qthemes.setup_theme(theme, additional_qss=additional_qss)
+    bec_qthemes.setup_theme(theme, additional_qss=additional_qss)
 
 
 def test_enable_high_dpi(qapp) -> None:
     """Verify that the function `enable_high_dpi()` runs without error."""
-    qthemes.enable_hi_dpi()
+    bec_qthemes.enable_hi_dpi()
 
 
 def test_stop_sync(qapp) -> None:
     """Verify that the function `stop_sync()` runs without error."""
-    qthemes.setup_theme("auto")
-    qthemes.stop_sync()
+    bec_qthemes.setup_theme("auto")
+    bec_qthemes.stop_sync()
 
 
 def test_setup_theme_without_qapp() -> None:
@@ -74,7 +74,7 @@ def test_setup_theme_without_qapp() -> None:
             Exception,
             match=re.escape("setup_theme() must be called after instantiation of QApplication."),
         ):
-            qthemes.setup_theme()
+            bec_qthemes.setup_theme()
 
 
 if platform.system() == "Darwin":
@@ -82,7 +82,7 @@ if platform.system() == "Darwin":
     def test_theme_event_filter(qapp: QGuiApplication) -> None:
         """Verify that the internal class `ThemeEventFilter` runs without error."""
 
-        qthemes.setup_theme("auto")
+        bec_qthemes.setup_theme("auto")
         with mock.patch("darkdetect.theme", return_value="light"):
             qapp.setPalette(QPalette())
         with mock.patch("darkdetect.theme", return_value="dark"):

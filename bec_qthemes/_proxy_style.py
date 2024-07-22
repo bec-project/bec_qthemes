@@ -5,9 +5,9 @@ import platform
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QProxyStyle, QStyle, QStyleOption
 
-from qthemes._icon.icon_engine import SvgIconEngine
-from qthemes._icon.svg import Svg
-from qthemes._resources.standard_icons import NEW_STANDARD_ICON_MAP
+from bec_qthemes._icon.icon_engine import SvgIconEngine
+from bec_qthemes._icon.svg import Svg
+from bec_qthemes._resources.standard_icons import NEW_STANDARD_ICON_MAP
 
 
 class qthemesStyle(QProxyStyle):
