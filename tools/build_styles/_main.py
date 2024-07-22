@@ -29,7 +29,7 @@ Created by the `PyQtDarkTheme/tools/build_styles`.
 
 
 def _get_dist_path() -> Path:
-    return Path(__file__).parent.parent.parent / "qthemes" / "_resources"
+    return Path(__file__).parent.parent.parent / "bec_qthemes" / "_resources"
 
 
 def _remove_qss_comment(stylesheet: str) -> str:

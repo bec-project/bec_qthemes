@@ -87,5 +87,5 @@ if platform.system() == "Darwin":
             qapp.setPalette(QPalette())
         with mock.patch("darkdetect.theme", return_value="dark"):
             qapp.setPalette(QPalette())
-        with mock.patch("qthemes._os_appearance.accent", return_value="red"):
+        with mock.patch("bec_qthemes._os_appearance.accent", return_value="red"):
             qapp.setPalette(QPalette())

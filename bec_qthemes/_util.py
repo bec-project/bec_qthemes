@@ -55,7 +55,7 @@ def get_logger(logger_name: str) -> logging.Logger:
 
 def get_cash_root_path(version: str) -> Path:
     """Return the cash root dir path."""
-    return Path.home() / ".cache" / "qthemes" / f"v{version}"
+    return Path.home() / ".cache" / "bec_qthemes" / f"v{version}"
 
 
 def get_qthemes_root_path() -> Path:

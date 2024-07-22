@@ -1,4 +1,5 @@
 """Module for color code."""
+
 from __future__ import annotations
 
 import colorsys
@@ -220,11 +221,15 @@ class Color:
 
     def lighten(self, factor: float) -> Color:
         """Lighten color."""
-        return Color(_HSLA(self.hsla.h, self.hsla.s, self.hsla.l + self.hsla.l * factor, self.hsla.a))
+        return Color(
+            _HSLA(self.hsla.h, self.hsla.s, self.hsla.l + self.hsla.l * factor, self.hsla.a)
+        )
 
     def darken(self, factor: float) -> Color:
         """Darken color."""
-        return Color(_HSLA(self.hsla.h, self.hsla.s, self.hsla.l - self.hsla.l * factor, self.hsla.a))
+        return Color(
+            _HSLA(self.hsla.h, self.hsla.s, self.hsla.l - self.hsla.l * factor, self.hsla.a)
+        )
 
     def transparent(self, factor: float) -> Color:
         """Make color transparent."""
