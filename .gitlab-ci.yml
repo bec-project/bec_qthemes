@@ -89,7 +89,8 @@ tests:
   script:
     - *clone-repos
     - *install-os-packages
-    - pip install -e .[dev,$QT_PCKG]
+    - pip install $QT_PCKG
+    - pip install -e .[dev]
     - pytest -v --junitxml=report.xml --random-order ./tests
   allow_failure: false
 
