@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.1 (2024-08-21)
+
+### Fix
+
+* fix: fixed material icon width ([`da2381d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/da2381d8abaa40e7aedf2f9b9c2d94b6a1625ab7))
+
 ## v0.1.0 (2024-08-21)
 
 ### Build
