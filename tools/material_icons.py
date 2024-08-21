@@ -30,10 +30,11 @@ def _download_icon(name: str, style: str) -> None:
         output_path.write_text(svg)
 
 
-def download_all_icons() -> None:
+def download_all_icons(filled=False) -> None:
     """Download all material design icons."""
     # get all available icons on google's repository
     github_repo_path = "../material-design-icons/symbols/web"
+    output = f"all_material_icons{'_filled' if filled else ''}.json"
     print(os.path.abspath(github_repo_path))
     # walk through all directories and read the svg files in the materialssymbolsrounded directory
     out = {}
@@ -44,13 +45,19 @@ def download_all_icons() -> None:
                 svg_path = os.path.join(root, file)
                 symbol_name = root.split("/")[-2]
 
-                if file != f"{symbol_name}_wght500_48px.svg":
+                target_file = (
+                    f"{symbol_name}_wght500fill1_48px.svg"
+                    if filled
+                    else f"{symbol_name}_wght500_48px.svg"
+                )
+
+                if file != target_file:
                     continue
 
                 with open(svg_path, "r") as f:
                     svg = f.read()
                     out[symbol_name] = svg
-    with open(get_style_path() / "svg" / "all_material_icons.json", "w") as f:
+    with open(get_style_path() / "svg" / output, "w") as f:
         json.dump(out, f, indent=2)
 
 
@@ -89,4 +96,4 @@ def update_icons() -> None:
 
 
 if __name__ == "__main__":
-    download_all_icons()
+    download_all_icons(filled=True)

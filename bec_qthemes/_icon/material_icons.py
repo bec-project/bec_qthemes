@@ -28,13 +28,25 @@ def _material_icons() -> dict[str, str]:
         return json.loads(data)
 
 
+@lru_cache()
+def _material_icons_filled() -> dict[str, str]:
+    icons_file = (
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        + "/style/svg/all_material_icons_filled.json"
+    )
+    with open(icons_file, "r", encoding="utf-8") as f:
+        data = f.read()
+        return json.loads(data)
+
+
 class _MaterialIconSVG(Svg):
-    def __init__(self, id: str) -> None:
+    def __init__(self, id: str, filled=False) -> None:
         """Initialize svg manager."""
         self._id = id
         self._color = None
         self._rotate = None
-        self._source = _material_icons()[self._id]
+        icons_storage = _material_icons_filled() if filled else _material_icons()
+        self._source = icons_storage[self._id]
 
 
 class _MaterialIconEngine(SvgIconEngine):
@@ -57,9 +69,7 @@ class _MaterialIconEngine(SvgIconEngine):
         renderer = QSvgRenderer(svg_byte)  # type: ignore
         renderer.render(painter, QRectF(rect))
 
-    def pixmap(
-        self, size: QSize, mode: QIcon.Mode, state: QIcon.State, color: Color | None = None
-    ) -> QPixmap:
+    def pixmap(self, size: QSize, mode: QIcon.Mode, color: Color | None = None) -> QPixmap:
         """Return the icon as a pixmap with requested size, mode, and state."""
         # Make size to square.
         min_size = min(size.width(), size.height())
@@ -70,7 +80,7 @@ class _MaterialIconEngine(SvgIconEngine):
         img.fill(Qt.GlobalColor.transparent)
         pixmap = QPixmap.fromImage(img, Qt.ImageConversionFlag.NoFormatConversion)
         size.width()
-        self.paint(QPainter(pixmap), QRect(QPoint(0, 0), size), mode, state, color)
+        self.paint(QPainter(pixmap), QRect(QPoint(0, 0), size), mode, None, color)
         return pixmap
 
 
@@ -80,7 +90,7 @@ def material_icon(
     color: str | tuple | QColor | None = None,
     rotate=0,
     mode=None,
-    state=None,
+    filled=False,
 ) -> QPixmap:
     """
     Return a QPixmap of a Material icon.
@@ -93,8 +103,7 @@ def material_icon(
             Defaults to None.
         rotate (int, optional): The rotation of the icon in degrees. Defaults to 0.
         mode ([type], optional): The mode of the icon. Defaults to None.
-        state ([type], optional): The state of the icon. Defaults
-            to None.
+        filled (bool, optional): Whether to use the filled version of the icon. Defaults to False.
 
     Returns:
         QPixmap: The icon as a QPixmap
@@ -103,7 +112,7 @@ def material_icon(
         >>> label = QLabel()
         >>> label.setPixmap(material_icon("point_scan", size=(200, 200), rotate=10))
     """
-    svg = _MaterialIconSVG(icon_name)
+    svg = _MaterialIconSVG(icon_name, filled)
     if color is not None:
         if isinstance(color, str):
             color = Color.from_hex(color)
@@ -120,7 +129,7 @@ def material_icon(
     elif isinstance(size, tuple):
         size = QSize(*size)
 
-    return icon.pixmap(size, mode, state, color=color)
+    return icon.pixmap(size, mode, color=color)
 
 
 if __name__ == "__main__":
@@ -128,6 +137,6 @@ if __name__ == "__main__":
 
     app = QApplication([])
     label = QLabel()
-    label.setPixmap(material_icon("point_scan", size=(200, 200), rotate=10))
+    label.setPixmap(material_icon("palette", size=(200, 200), filled=False, color="#000000"))
     label.show()
     app.exec_()
