@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.2.0 (2024-08-21)
+
+### Feature
+
+* feat: added option to create filled icons ([`538893d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/538893d898825a18f01d47c705d3c2869016d892))
+
 ## v0.1.1 (2024-08-21)
 
 ### Fix
