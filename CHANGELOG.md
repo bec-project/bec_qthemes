@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.1.0 (2024-08-21)
+
+### Build
+
+* build: import material icons by default ([`d1dcbfd`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/d1dcbfdd48fc4f67d69d17cf12f6e084df26cf90))
+
+### Feature
+
+* feat: added material_icons engine ([`3a1a37e`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/3a1a37e241a7f32e0ab209c7ce2ffc18160ed9f6))
+
 ## v0.0.2 (2024-07-22)
 
 ### Fix
