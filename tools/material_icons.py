@@ -2,6 +2,7 @@
 
 import json
 import logging
+import os
 from urllib import request
 
 from tools._util import get_style_path
@@ -27,6 +28,30 @@ def _download_icon(name: str, style: str) -> None:
     with request.urlopen(url) as response:
         svg: str = response.read().decode()
         output_path.write_text(svg)
+
+
+def download_all_icons() -> None:
+    """Download all material design icons."""
+    # get all available icons on google's repository
+    github_repo_path = "../material-design-icons/symbols/web"
+    print(os.path.abspath(github_repo_path))
+    # walk through all directories and read the svg files in the materialssymbolsrounded directory
+    out = {}
+
+    for root, dirs, files in os.walk(github_repo_path):
+        for file in files:
+            if file.endswith(".svg"):
+                svg_path = os.path.join(root, file)
+                symbol_name = root.split("/")[-2]
+
+                if file != f"{symbol_name}_wght500_48px.svg":
+                    continue
+
+                with open(svg_path, "r") as f:
+                    svg = f.read()
+                    out[symbol_name] = svg
+    with open(get_style_path() / "svg" / "all_material_icons.json", "w") as f:
+        json.dump(out, f, indent=2)
 
 
 def _download_missing_icons() -> None:
@@ -61,3 +86,7 @@ def update_icons() -> None:
     """Update all material design icons."""
     _download_all()
     reflect_icon_conf_changes()
+
+
+if __name__ == "__main__":
+    download_all_icons()

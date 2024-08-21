@@ -6,7 +6,7 @@ from functools import lru_cache
 from typing import TYPE_CHECKING
 
 from qtpy.QtCore import QPoint, QRect, QRectF, QSize, Qt
-from qtpy.QtGui import QGuiApplication, QIcon, QImage, QPainter, QPalette, QPixmap
+from qtpy.QtGui import QColor, QGuiApplication, QIcon, QImage, QPainter, QPalette, QPixmap
 from qtpy.QtSvg import QSvgRenderer
 
 from bec_qthemes._color import Color
@@ -77,7 +77,7 @@ class _MaterialIconEngine(SvgIconEngine):
 def material_icon(
     icon_name: str,
     size: tuple | QSize | None = None,
-    color_hex=None,
+    color: str | tuple | QColor | None = None,
     rotate=0,
     mode=None,
     state=None,
@@ -89,8 +89,8 @@ def material_icon(
         icon_name (str): The name of the Material icon.
             Check https://https://fonts.google.com/icons for the list of available icons.
         size (tuple | QSize | None, optional): The size of the icon. Defaults to None.
-        color_hex ([type], optional): The color of the icon in hexadecimal. If set to None,
-            the icon will be colored based on the palette. Defaults to None.
+        color (str | tuple | QColor | None, optional): The color of the icon. Either a hex string, a tuple of RGB values, or a QColor.
+            Defaults to None.
         rotate (int, optional): The rotation of the icon in degrees. Defaults to 0.
         mode ([type], optional): The mode of the icon. Defaults to None.
         state ([type], optional): The state of the icon. Defaults
@@ -104,10 +104,13 @@ def material_icon(
         >>> label.setPixmap(material_icon("point_scan", size=(200, 200), rotate=10))
     """
     svg = _MaterialIconSVG(icon_name)
-    if color_hex is not None:
-        color = Color.from_hex(color_hex)
-    else:
-        color = None
+    if color is not None:
+        if isinstance(color, str):
+            color = Color.from_hex(color)
+        elif isinstance(color, tuple):
+            color = Color.from_rgba(*color)
+        elif isinstance(color, QColor):
+            color = Color.from_rgba(color.red(), color.green(), color.blue(), color.alpha())
     if rotate != 0:
         svg.rotate(rotate)
 
