@@ -46,8 +46,14 @@ class _MaterialIconSVG(Svg):
         self._id = id
         self._color = None
         self._rotate = None
-        icons_storage = _material_icons_filled() if filled else _material_icons()
-        self._source = icons_storage[self._id]
+
+        if filled:
+            if id not in _material_icons_filled():
+                self._source = _material_icons()[id]
+            else:
+                self._source = _material_icons_filled()[id]
+        else:
+            self._source = _material_icons()[id]
 
 
 class _MaterialIconEngine(SvgIconEngine):
