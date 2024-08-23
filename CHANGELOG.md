@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.3.0 (2024-08-23)
+
+### Feature
+
+* feat: added fft and log_scale icons; removed duplicates ([`35a4a8d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/35a4a8db39f96340e306701a352836e3639038af))
+
+* feat: fall back to non-filled icons if filled icons are not found ([`1705a9d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/1705a9df0984b7f545f0dc36dfcfcce9e24305cc))
+
+* feat: added support for stoke color replacement ([`d26db16`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/d26db16d3596484f497da0869add12ebf2945606))
+
 ## v0.2.1 (2024-08-23)
 
 ### Fix
@@ -51,11 +61,3 @@
 ### Unknown
 
 * wip ([`e26f9a7`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/e26f9a7018d081eda25e0ca874afd2747a420ae7))
-
-* Delete .python-version ([`f8b160a`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/f8b160a5a19ec28360d16980eb2c17d6c219a95a))
-
-* wip ([`ca3f5ab`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/ca3f5abe631739357f91b0040a970a5781347956))
-
-* wip ([`3683415`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/3683415238f9d928eacc11713c2658f642cf5ba9))
-
-* init ([`c654127`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/c6541276953684d529bc97f91362f0b4c3a20481))
