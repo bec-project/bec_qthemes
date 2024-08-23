@@ -19,6 +19,7 @@ class Svg:
     _SVG_FILL_RE = re.compile(r'fill=".*?"')
     _SVG_FILL_OPACITY_RE = re.compile(r'fill-opacity=".*?"')
     _SVG_TRANSFORM_RE = re.compile(r'transform=".*?"')
+    _SVG_STROKE = re.compile(r"stroke:.*?;")
 
     def __init__(self, id: str) -> None:
         """Initialize svg manager."""
@@ -42,6 +43,7 @@ class Svg:
 
         current_svg_color = Svg._SVG_FILL_RE.search(self._source)
         current_svg_opacity = Svg._SVG_FILL_OPACITY_RE.search(self._source)
+        current_svg_stroke = Svg._SVG_STROKE.search(self._source)
 
         # Add or change SVG color.
         if current_svg_color is None:
@@ -54,6 +56,11 @@ class Svg:
             self._source = self._source.replace("<svg ", f"<svg {new_svg_opacity} ")
         elif new_svg_opacity is not None and current_svg_opacity is not None:
             self._source = self._source.replace(current_svg_opacity.group(), new_svg_opacity)
+
+        if current_svg_stroke is not None:
+            self._source = self._source.replace(
+                current_svg_stroke.group(), f"stroke: #{color._to_hex()};"
+            )
 
         # Remove SVG opacity
         if new_svg_opacity is None and current_svg_opacity is not None:
