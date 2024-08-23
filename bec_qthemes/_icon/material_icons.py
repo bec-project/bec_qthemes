@@ -12,6 +12,7 @@ from qtpy.QtSvg import QSvgRenderer
 from bec_qthemes._color import Color
 from bec_qthemes._icon.icon_engine import SvgIconEngine
 from bec_qthemes._icon.svg import Svg
+from bec_qthemes._style_loader import load_palette
 
 if TYPE_CHECKING:
     from qtpy.QtGui import QPixmap
@@ -63,7 +64,11 @@ class _MaterialIconEngine(SvgIconEngine):
 
     def paint(self, painter: QPainter, rect: QRect, mode: QIcon.Mode, state):
         """Paint the icon int ``rect`` using ``painter``."""
-        palette = QGuiApplication.palette()
+        if hasattr(QGuiApplication.instance(), "theme"):
+            theme = QGuiApplication.instance().theme["theme"]
+            palette = load_palette(theme)
+        else:
+            palette = QGuiApplication.palette()
 
         if self.color is None:
             if mode == QIcon.Mode.Disabled:
@@ -83,7 +88,8 @@ class _MaterialIconEngine(SvgIconEngine):
                 if theme in self.color:
                     color = Color.from_hex(self.color[theme])
                 else:
-                    color = None
+                    rgba = palette.text().color().getRgb()
+                    color = Color.from_rgba(*rgba)
 
             elif isinstance(self.color, tuple):
                 color = Color.from_rgba(*color)
