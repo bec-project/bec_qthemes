@@ -3,15 +3,16 @@ from __future__ import annotations
 import json
 import os
 from functools import lru_cache
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal, overload
 
-from qtpy.QtCore import QPoint, QRect, QRectF, QSize, Qt
-from qtpy.QtGui import QColor, QGuiApplication, QIcon, QImage, QPainter, QPalette, QPixmap
+from qtpy.QtCore import QRect, QRectF, QSize
+from qtpy.QtGui import QColor, QGuiApplication, QIcon, QPainter, QPalette, QPixmap
 from qtpy.QtSvg import QSvgRenderer
 
 from bec_qthemes._color import Color
 from bec_qthemes._icon.icon_engine import SvgIconEngine
 from bec_qthemes._icon.svg import Svg
+from bec_qthemes._style_loader import _detect_system_theme
 
 if TYPE_CHECKING:
     from qtpy.QtGui import QPixmap
@@ -50,48 +51,78 @@ class _MaterialIconSVG(Svg):
 
 
 class _MaterialIconEngine(SvgIconEngine):
-    def paint(
-        self, painter: QPainter, rect: QRect, mode: QIcon.Mode, state, color: Color | None = None
-    ):
+    def __init__(self, svg: _MaterialIconSVG) -> None:
+        """Initialize icon engine."""
+        super().__init__(svg)
+        self.color = None
+
+    def paint(self, painter: QPainter, rect: QRect, mode: QIcon.Mode, state):
         """Paint the icon int ``rect`` using ``painter``."""
         palette = QGuiApplication.palette()
 
-        if color is None:
+        if self.color is None:
             if mode == QIcon.Mode.Disabled:
                 rgba = palette.color(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Text).getRgb()
                 color = Color.from_rgba(*rgba)
             else:
                 rgba = palette.text().color().getRgb()
                 color = Color.from_rgba(*rgba)
+        else:
+            if isinstance(self.color, str):
+                color = Color.from_hex(color)
+            elif isinstance(self.color, dict):
+                theme = _detect_system_theme("None")
+                if theme in self.color:
+                    color = Color.from_hex(self.color[theme])
+                else:
+                    color = None
+
+            elif isinstance(self.color, tuple):
+                color = Color.from_rgba(*color)
+            elif isinstance(self.color, QColor):
+                color = Color.from_rgba(
+                    self.color.red(), self.color.green(), self.color.blue(), self.color.alpha()
+                )
         self._svg.colored(color)
 
         svg_byte = str(self._svg).encode("utf-8")
         renderer = QSvgRenderer(svg_byte)  # type: ignore
         renderer.render(painter, QRectF(rect))
 
-    def pixmap(self, size: QSize, mode: QIcon.Mode, color: Color | None = None) -> QPixmap:
-        """Return the icon as a pixmap with requested size, mode, and state."""
-        # Make size to square.
-        min_size = min(size.width(), size.height())
-        size.setHeight(min_size)
-        size.setWidth(min_size)
 
-        img = QImage(size, QImage.Format.Format_ARGB32)
-        img.fill(Qt.GlobalColor.transparent)
-        pixmap = QPixmap.fromImage(img, Qt.ImageConversionFlag.NoFormatConversion)
-        size.width()
-        self.paint(QPainter(pixmap), QRect(QPoint(0, 0), size), mode, None, color)
-        return pixmap
+@overload
+def material_icon(
+    icon_name: str,
+    size: tuple | QSize | None = None,
+    color: str | tuple | QColor | dict[Literal["dark", "light"], str] | None = None,
+    rotate=0,
+    mode=None,
+    filled=False,
+    convert_to_pixmap=True,
+) -> QPixmap: ...
+
+
+@overload
+def material_icon(
+    icon_name: str,
+    size: tuple | QSize | None = None,
+    color: str | tuple | QColor | dict[Literal["dark", "light"], str] | None = None,
+    rotate=0,
+    mode=None,
+    filled=False,
+    convert_to_pixmap=False,
+) -> QIcon: ...
 
 
 def material_icon(
     icon_name: str,
     size: tuple | QSize | None = None,
-    color: str | tuple | QColor | None = None,
+    color: str | tuple | QColor | dict[Literal["dark", "light"], str] | None = None,
     rotate=0,
     mode=None,
     filled=False,
-) -> QPixmap:
+    convert_to_pixmap=True,
+) -> QPixmap | QIcon:
     """
     Return a QPixmap of a Material icon.
 
@@ -104,6 +135,7 @@ def material_icon(
         rotate (int, optional): The rotation of the icon in degrees. Defaults to 0.
         mode ([type], optional): The mode of the icon. Defaults to None.
         filled (bool, optional): Whether to use the filled version of the icon. Defaults to False.
+        convert_to_pixmap (bool, optional): Whether to convert the icon to a QPixmap. Defaults to True.
 
     Returns:
         QPixmap: The icon as a QPixmap
@@ -113,23 +145,21 @@ def material_icon(
         >>> label.setPixmap(material_icon("point_scan", size=(200, 200), rotate=10))
     """
     svg = _MaterialIconSVG(icon_name, filled)
-    if color is not None:
-        if isinstance(color, str):
-            color = Color.from_hex(color)
-        elif isinstance(color, tuple):
-            color = Color.from_rgba(*color)
-        elif isinstance(color, QColor):
-            color = Color.from_rgba(color.red(), color.green(), color.blue(), color.alpha())
     if rotate != 0:
         svg.rotate(rotate)
 
     icon = _MaterialIconEngine(svg)
+    if color is not None:
+        icon.color = color
+    if not convert_to_pixmap:
+        return QIcon(icon)
+
     if size is None:
         size = QSize(50, 50)
     elif isinstance(size, tuple):
         size = QSize(*size)
 
-    return icon.pixmap(size, mode, color=color)
+    return icon.pixmap(size, mode, state=None)
 
 
 if __name__ == "__main__":
