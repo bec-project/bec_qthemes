@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.4.0 (2024-08-23)
+
+### Feature
+
+* feat: store theme and theme mode in qapp ([`6761281`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/67612811ba077ae823a6c4f7d84b0f2edafdf760))
+
+### Fix
+
+* fix: use currently selected theme for icons ([`2a0c73e`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/2a0c73ec5fcb5fb6ea97fe31ab719f3687f26f95))
+
 ## v0.3.0 (2024-08-23)
 
 ### Feature
@@ -51,13 +61,3 @@
 * ci: fixed install of qt deps ([`ae1eae3`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/ae1eae360cf23e95d81e91fb54b73ca659291d33))
 
 * ci: fixed test job name ([`c1f83d2`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/c1f83d242e585e6be1aef7fdaf660fd3bb2fc38e))
-
-* ci: fixed test stage and removed outdated jobs ([`a33e36d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/a33e36d660501a4ac785762839872f19d44bd756))
-
-### Fix
-
-* fix: fixed darkdetect dependency ([`93d3561`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/93d35616b6fc4198edc9c5de57e8c7272ecac454))
-
-### Unknown
-
-* wip ([`e26f9a7`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/e26f9a7018d081eda25e0ca874afd2747a420ae7))
