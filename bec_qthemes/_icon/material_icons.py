@@ -76,7 +76,10 @@ class _MaterialIconEngine(SvgIconEngine):
             if isinstance(self.color, str):
                 color = Color.from_hex(color)
             elif isinstance(self.color, dict):
-                theme = QGuiApplication.instance().theme["theme"]
+                if not hasattr(QGuiApplication.instance(), "theme"):
+                    theme = None
+                else:
+                    theme = QGuiApplication.instance().theme["theme"]
                 if theme in self.color:
                     color = Color.from_hex(self.color[theme])
                 else:
@@ -88,7 +91,8 @@ class _MaterialIconEngine(SvgIconEngine):
                 color = Color.from_rgba(
                     self.color.red(), self.color.green(), self.color.blue(), self.color.alpha()
                 )
-        self._svg.colored(color)
+        if color is not None:
+            self._svg.colored(color)
 
         svg_byte = str(self._svg).encode("utf-8")
         renderer = QSvgRenderer(svg_byte)  # type: ignore
