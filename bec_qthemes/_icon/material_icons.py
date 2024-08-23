@@ -12,7 +12,6 @@ from qtpy.QtSvg import QSvgRenderer
 from bec_qthemes._color import Color
 from bec_qthemes._icon.icon_engine import SvgIconEngine
 from bec_qthemes._icon.svg import Svg
-from bec_qthemes._style_loader import _detect_system_theme
 
 if TYPE_CHECKING:
     from qtpy.QtGui import QPixmap
@@ -77,7 +76,7 @@ class _MaterialIconEngine(SvgIconEngine):
             if isinstance(self.color, str):
                 color = Color.from_hex(color)
             elif isinstance(self.color, dict):
-                theme = _detect_system_theme("None")
+                theme = QGuiApplication.instance().theme["theme"]
                 if theme in self.color:
                     color = Color.from_hex(self.color[theme])
                 else:
