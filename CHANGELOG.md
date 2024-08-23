@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.2.1 (2024-08-23)
+
+### Fix
+
+* fix: fixed render update for custom icons ([`72190c4`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/72190c45884ecda5dc9c5ef109d8730f286f8f0e))
+
 ## v0.2.0 (2024-08-21)
 
 ### Feature
@@ -53,5 +59,3 @@
 * wip ([`3683415`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/3683415238f9d928eacc11713c2658f642cf5ba9))
 
 * init ([`c654127`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/c6541276953684d529bc97f91362f0b4c3a20481))
-
-* Initial commit ([`9184bdd`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/9184bdde0f76e0a8af7806e266ea4643414f22f2))
