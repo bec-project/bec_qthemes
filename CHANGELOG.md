@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.4.2 (2024-08-23)
+
+### Fix
+
+* fix: fixed icon update ([`a5918a3`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/a5918a3a0d4927ed43529e427d1300ce76a6ee33))
+
 ## v0.4.1 (2024-08-23)
 
 ### Fix
@@ -55,9 +61,3 @@
 * feat: added material_icons engine ([`3a1a37e`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/3a1a37e241a7f32e0ab209c7ce2ffc18160ed9f6))
 
 ## v0.0.2 (2024-07-22)
-
-### Fix
-
-* fix: removed webengine deps ([`2b887ff`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/2b887ffabc6932ffc3b8518ba065223f828c2f88))
-
-## v0.0.1 (2024-07-22)
