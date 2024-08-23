@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.4.1 (2024-08-23)
+
+### Fix
+
+* fix: theme fallback ([`640911a`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/640911a4afc07020c666b06ebd5322ba58328757))
+
 ## v0.4.0 (2024-08-23)
 
 ### Feature
@@ -55,9 +61,3 @@
 * fix: removed webengine deps ([`2b887ff`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/2b887ffabc6932ffc3b8518ba065223f828c2f88))
 
 ## v0.0.1 (2024-07-22)
-
-### Ci
-
-* ci: fixed install of qt deps ([`ae1eae3`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/ae1eae360cf23e95d81e91fb54b73ca659291d33))
-
-* ci: fixed test job name ([`c1f83d2`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/c1f83d242e585e6be1aef7fdaf660fd3bb2fc38e))
