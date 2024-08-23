@@ -162,6 +162,13 @@ def setup_theme(
         stop_sync()
     app.setProperty("_qthemes_use_setup_style", True)
 
+    app.theme = {"mode": theme, "theme": theme}
+
+    if platform.system() == "Darwin" and theme == "auto":
+        app.theme["theme"] = darkdetect.theme().lower() or default_theme
+    else:
+        app.theme["theme"] = theme
+
     def callback():
         _apply_style(
             app,
