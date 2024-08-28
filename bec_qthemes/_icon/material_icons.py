@@ -79,7 +79,7 @@ class _MaterialIconEngine(SvgIconEngine):
                 color = Color.from_rgba(*rgba)
         else:
             if isinstance(self.color, str):
-                color = Color.from_hex(color)
+                color = Color.from_hex(self.color)
             elif isinstance(self.color, dict):
                 if not hasattr(QGuiApplication.instance(), "theme"):
                     theme = None
@@ -92,7 +92,7 @@ class _MaterialIconEngine(SvgIconEngine):
                     color = Color.from_rgba(*rgba)
 
             elif isinstance(self.color, tuple):
-                color = Color.from_rgba(*color)
+                color = Color.from_rgba(*self.color)
             elif isinstance(self.color, QColor):
                 color = Color.from_rgba(
                     self.color.red(), self.color.green(), self.color.blue(), self.color.alpha()
