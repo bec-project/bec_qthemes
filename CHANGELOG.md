@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v0.4.3 (2024-08-28)
+
+### Fix
+
+* fix: fixed self.color typo ([`5c93b01`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/5c93b01f2e3dc9418901f12ddd9b9008a8e24dd6))
+
+### Unknown
+
+* Merge branch &#39;fix/material-colors&#39; into &#39;main&#39;
+
+fix: fixed self.color typo
+
+See merge request bec/bec_qthemes!1 ([`d868490`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/d868490e523be525386c2f04495cd82a10efcf5b))
+
 ## v0.4.2 (2024-08-23)
 
 ### Fix
@@ -55,9 +69,3 @@
 ### Build
 
 * build: import material icons by default ([`d1dcbfd`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/d1dcbfdd48fc4f67d69d17cf12f6e084df26cf90))
-
-### Feature
-
-* feat: added material_icons engine ([`3a1a37e`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/3a1a37e241a7f32e0ab209c7ce2ffc18160ed9f6))
-
-## v0.0.2 (2024-07-22)
