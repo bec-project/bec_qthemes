@@ -5,11 +5,16 @@ import os
 import platform
 
 import darkdetect
+from qtpy.QtCore import QObject, Signal
 
 from bec_qthemes._style_loader import load_palette, load_stylesheet
 
 _listener = None
 _proxy_style = None
+
+
+class ThemeSignal(QObject):
+    theme_updated = Signal(str)
 
 
 def _apply_style(app, additional_qss: str | None, **kargs) -> None:
@@ -163,6 +168,7 @@ def setup_theme(
     app.setProperty("_qthemes_use_setup_style", True)
 
     app.theme = {"mode": theme, "theme": theme}
+    app.theme_signal = ThemeSignal()
 
     if platform.system() == "Darwin" and theme == "auto":
         app.theme["theme"] = darkdetect.theme().lower() or default_theme
