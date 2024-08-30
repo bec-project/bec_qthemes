@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bec_qthemes"
-version = "0.4.3"
+version = "0.5.0"
 description = "BEC Qt themes"
 requires-python = ">=3.10"
 classifiers = [

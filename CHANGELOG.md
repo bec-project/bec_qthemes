@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.5.0 (2024-08-30)
+
+### Feature
+
+* feat: added theme signal to qapp ([`bb71cba`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/bb71cba8e17ca8d5b7b91d4f6115c3e618c63237))
+
 ## v0.4.3 (2024-08-28)
 
 ### Fix
@@ -63,9 +69,3 @@ See merge request bec/bec_qthemes!1 ([`d868490`](https://gitlab.psi.ch/bec/bec_q
 ### Fix
 
 * fix: fixed material icon width ([`da2381d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/da2381d8abaa40e7aedf2f9b9c2d94b6a1625ab7))
-
-## v0.1.0 (2024-08-21)
-
-### Build
-
-* build: import material icons by default ([`d1dcbfd`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/d1dcbfdd48fc4f67d69d17cf12f6e084df26cf90))
