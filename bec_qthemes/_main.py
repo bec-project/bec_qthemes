@@ -95,6 +95,7 @@ def setup_theme(
     additional_qss: str | None = None,
     *,
     default_theme: str = "dark",
+    install_event_filter: bool = True,
 ) -> None:
     """Apply the theme which looks like flat design to the Qt App completely.
 
@@ -188,6 +189,9 @@ def setup_theme(
         )
 
     callback()
+
+    if not install_event_filter:
+        return
 
     if theme == "auto" and darkdetect.theme() is not None:
         _sync_theme_with_system(app, callback)
