@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.5.1 (2024-08-31)
+
+### Fix
+
+* fix(theme_signal): do not recreate theme signal instance on repeated calls ([`9a4afda`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/9a4afdac4459414b7bc635bc80c5a3214f1eb2e1))
+
 ## v0.5.0 (2024-08-30)
 
 ### Feature
@@ -63,9 +69,3 @@ See merge request bec/bec_qthemes!1 ([`d868490`](https://gitlab.psi.ch/bec/bec_q
 ### Feature
 
 * feat: added option to create filled icons ([`538893d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/538893d898825a18f01d47c705d3c2869016d892))
-
-## v0.1.1 (2024-08-21)
-
-### Fix
-
-* fix: fixed material icon width ([`da2381d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/da2381d8abaa40e7aedf2f9b9c2d94b6a1625ab7))
