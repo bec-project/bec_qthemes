@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.6.0 (2024-08-31)
+
+### Feature
+
+* feat(event filter): added option to disable the event filter ([`6afb9d3`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/6afb9d3954775c25bd612b19096f4508c10fba23))
+
 ## v0.5.1 (2024-08-31)
 
 ### Fix
@@ -63,9 +69,3 @@ See merge request bec/bec_qthemes!1 ([`d868490`](https://gitlab.psi.ch/bec/bec_q
 ### Fix
 
 * fix: fixed render update for custom icons ([`72190c4`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/72190c45884ecda5dc9c5ef109d8730f286f8f0e))
-
-## v0.2.0 (2024-08-21)
-
-### Feature
-
-* feat: added option to create filled icons ([`538893d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/538893d898825a18f01d47c705d3c2869016d892))
