@@ -168,7 +168,9 @@ def setup_theme(
     app.setProperty("_qthemes_use_setup_style", True)
 
     app.theme = {"mode": theme, "theme": theme}
-    app.theme_signal = ThemeSignal()
+
+    if not hasattr(app, "theme_signal"):
+        app.theme_signal = ThemeSignal()
 
     if platform.system() == "Darwin" and theme == "auto":
         app.theme["theme"] = darkdetect.theme().lower() or default_theme
