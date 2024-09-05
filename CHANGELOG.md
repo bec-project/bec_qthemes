@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.7.0 (2024-09-05)
+
+### Feature
+
+* feat(accent colors): added custom accent colors and transitioned to themecontainer ([`7a203f8`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/7a203f8cff8993e9f99c1bed292658f685833b0f))
+
+### Fix
+
+* fix(theme): fixed theme container for linux ([`48dc8e6`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/48dc8e6a397d312900c07721eda7052cf3b9fc32))
+
 ## v0.6.0 (2024-08-31)
 
 ### Feature
@@ -61,11 +71,3 @@ See merge request bec/bec_qthemes!1 ([`d868490`](https://gitlab.psi.ch/bec/bec_q
 * feat: added fft and log_scale icons; removed duplicates ([`35a4a8d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/35a4a8db39f96340e306701a352836e3639038af))
 
 * feat: fall back to non-filled icons if filled icons are not found ([`1705a9d`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/1705a9df0984b7f545f0dc36dfcfcce9e24305cc))
-
-* feat: added support for stoke color replacement ([`d26db16`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/d26db16d3596484f497da0869add12ebf2945606))
-
-## v0.2.1 (2024-08-23)
-
-### Fix
-
-* fix: fixed render update for custom icons ([`72190c4`](https://gitlab.psi.ch/bec/bec_qthemes/-/commit/72190c45884ecda5dc9c5ef109d8730f286f8f0e))
