@@ -3,9 +3,11 @@ from __future__ import annotations
 import atexit
 import os
 import platform
+from typing import Literal
 
 import darkdetect
 from qtpy.QtCore import QObject, Signal
+from qtpy.QtGui import QColor
 
 from bec_qthemes._style_loader import load_palette, load_stylesheet
 
@@ -13,8 +15,114 @@ _listener = None
 _proxy_style = None
 
 
+ACCENT_COLORS = {
+    "light": {
+        "highlight": "#B53565",
+        "warning": "#EAC435",
+        "emergency": "#CC181E",
+        "success": "#2CA58D",
+    },
+    "dark": {
+        "highlight": "#B53565",
+        "warning": "#EAC435",
+        "emergency": "#CC181E",
+        "success": "#2CA58D",
+    },
+}
+
+
+class AccentColors:
+    def __init__(self, theme: str) -> None:
+        self.theme = theme
+        self._accents = ACCENT_COLORS[theme]
+        self._palette = load_palette(theme)
+
+    @property
+    def default(self) -> QColor:
+        """
+        The default palette color for the accent.
+        """
+        return self._palette.accent().color()
+
+    @property
+    def highlight(self) -> QColor:
+        """
+        The highlight color, which is used for normal accent without any specific meaning.
+        """
+        return QColor(self._accents["highlight"])
+
+    @property
+    def warning(self) -> QColor:
+        """
+        The warning color, which is used for warning accent.
+        """
+        return QColor(self._accents["warning"])
+
+    @property
+    def emergency(self) -> QColor:
+        """
+        The emergency color, which is used for emergency accent. This color should only be used for critical situations.
+        """
+        return QColor(self._accents["emergency"])
+
+    @property
+    def success(self) -> QColor:
+        """
+        The success color, which is used for success accent.
+        """
+        return QColor(self._accents["success"])
+
+
 class ThemeSignal(QObject):
     theme_updated = Signal(str)
+
+
+class ThemeContainer:
+    """
+    The theme container class.
+    """
+
+    def __init__(self, theme: Literal["auto", "dark", "light"]) -> None:
+        self.mode = "auto" if theme == "auto" else "manual"
+        self.theme = theme if theme != "auto" else None
+        self._default_theme = "dark"
+
+    def __getitem__(self, key):
+        # backward compatibility
+        return getattr(self, key)
+
+    @property
+    def theme(self) -> str:
+        """
+        The theme name. There are `dark`, `light` and `auto`.
+        """
+        if self.mode == "auto" and self._theme is None:
+            self._theme = self._get_default_theme()
+        return self._theme
+
+    @theme.setter
+    def theme(self, theme: Literal["auto", "dark", "light"]):
+        """
+        The theme name. There are `dark`, `light` and `auto`.
+        """
+        self._theme = theme
+        self._accents = AccentColors(self.theme)
+
+    def _get_default_theme(self) -> str:
+        """
+        Get the default theme. On macOS, it will return the system theme when the mode is auto.
+        """
+        if platform.system() == "Darwin" and self.mode == "auto":
+            return darkdetect.theme().lower() or self._default_theme
+        return self._default_theme
+
+    @property
+    def accent_colors(self) -> AccentColors:
+        """
+        The accent colors. The colors are different depending on the theme and are set
+        when changing the theme.
+        """
+        return self._accents
 
 
 def _apply_style(app, additional_qss: str | None, **kargs) -> None:
@@ -168,15 +276,10 @@ def setup_theme(
         stop_sync()
     app.setProperty("_qthemes_use_setup_style", True)
 
-    app.theme = {"mode": theme, "theme": theme}
+    app.theme = ThemeContainer(theme)
 
     if not hasattr(app, "theme_signal"):
         app.theme_signal = ThemeSignal()
-
-    if platform.system() == "Darwin" and theme == "auto":
-        app.theme["theme"] = darkdetect.theme().lower() or default_theme
-    else:
-        app.theme["theme"] = theme
 
     def callback():
         _apply_style(

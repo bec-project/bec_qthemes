@@ -65,7 +65,7 @@ class _MaterialIconEngine(SvgIconEngine):
     def paint(self, painter: QPainter, rect: QRect, mode: QIcon.Mode, state):
         """Paint the icon int ``rect`` using ``painter``."""
         if hasattr(QGuiApplication.instance(), "theme"):
-            theme = QGuiApplication.instance().theme["theme"]
+            theme = QGuiApplication.instance().theme.theme
             palette = load_palette(theme)
         else:
             palette = QGuiApplication.palette()
@@ -84,7 +84,7 @@ class _MaterialIconEngine(SvgIconEngine):
                 if not hasattr(QGuiApplication.instance(), "theme"):
                     theme = None
                 else:
-                    theme = QGuiApplication.instance().theme["theme"]
+                    theme = QGuiApplication.instance().theme.theme
                 if theme in self.color:
                     color = Color.from_hex(self.color[theme])
                 else:
