@@ -83,9 +83,9 @@ class ThemeContainer:
     """
 
     def __init__(self, theme: Literal["auto", "dark", "light"]) -> None:
+        self._default_theme = "dark"
         self.mode = "auto" if theme == "auto" else "manual"
         self.theme = theme if theme != "auto" else None
-        self._default_theme = "dark"
 
     def __getitem__(self, key):
         # backward compatibility
