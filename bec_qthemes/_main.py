@@ -17,12 +17,14 @@ _proxy_style = None
 
 ACCENT_COLORS = {
     "light": {
+        "default": "#0a60ff",
         "highlight": "#B53565",
         "warning": "#EAC435",
         "emergency": "#CC181E",
         "success": "#2CA58D",
     },
     "dark": {
+        "default": "#8ab4f7",
         "highlight": "#B53565",
         "warning": "#EAC435",
         "emergency": "#CC181E",
@@ -42,7 +44,7 @@ class AccentColors:
         """
         The default palette color for the accent.
         """
-        return self._palette.accent().color()
+        return QColor(self._accents["default"])
 
     @property
     def highlight(self) -> QColor:
