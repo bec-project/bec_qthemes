@@ -1,0 +1,61 @@
+/* Styles for PySide6QtAds widgets*/
+
+/*CDockWidget Settings*/
+ads--CDockWidget {
+    border: 1px solid %%BORDER%%;
+    border-radius: %%RADIUS_SMALL%%;
+}
+
+ads--CDockWidget > QWidget {
+    background-color: %%CARD_BG%%;
+}
+
+ads--CDockWidget::title {
+    background-color: %%BG%%;
+    color: %%FG%%;
+    padding: 4px;
+    border-bottom: 1px solid %%BORDER%%;
+}
+
+ads--CDockWidget::close-button,
+ads--CDockWidget::float-button,
+ads--CDockWidget::pin-button {
+    background-color: transparent;
+    color: %%FG%%;
+    border: none;
+    padding: 4px;
+}
+
+ads--CDockWidget::close-button:hover,
+ads--CDockWidget::float-button:hover,
+ads--CDockWidget::pin-button:hover {
+    background-color: %%PRIMARY%%;
+    color: %%ON_PRIMARY%%;
+}
+
+ads--CDockManager::tab-bar {
+    background-color: %%BG%%;
+}
+
+ads--CDockManager::tab {
+    background-color: %%CARD_BG%%;
+    color: %%FG%%;
+    padding: 8px 16px;
+    border: 1px solid %%BORDER%%;
+    border-bottom: none;
+}
+
+ads--CDockManager::tab:selected {
+    background-color: %%PRIMARY%%;
+    color: %%ON_PRIMARY%%;
+}
+
+ads--CDockManager::tab:hover {
+    background-color: %%PRIMARY_LIGHT%%;
+    color: %%ON_PRIMARY%%;
+}
+
+ads--CFloatingDockContainer {
+    border: 2px solid %%PRIMARY%%;
+    border-radius: %%RADIUS_SMALL%%;
+}

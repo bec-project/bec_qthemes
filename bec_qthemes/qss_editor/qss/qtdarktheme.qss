@@ -1,0 +1,453 @@
+/* === Base surfaces & text (dark.xml tokens only) === */
+QWidget {
+  background: %%BG%%;
+  color: %%FG%%;
+  selection-color: %%FG%%;
+  selection-background-color: %%PRIMARY%%;
+}
+QWidget:disabled {
+  color: %%FG%%;
+  selection-background-color: %%CARD_BG%%;
+  selection-color: %%FG%%;
+}
+QWidget:focus { outline: none; }
+
+/* Top level widget ---------------------------------------------------- */
+QCheckBox:!window,
+QRadioButton:!window,
+QPushButton:!window,
+QLabel:!window,
+QLCDNumber:!window { background: transparent; }
+
+QMdiSubWindow > QCheckBox:!window,
+QMdiSubWindow > QRadioButton:!window,
+QMdiSubWindow > QPushButton:!window,
+QMdiSubWindow > QLabel:!window,
+QMdiSubWindow > QLCDNumber:!window { background: %%BG%%; }
+
+/* QMainWindow ---------------------------------------------------------- */
+QMainWindow::separator { width: 4px; height: 4px; background: %%BORDER%%; }
+QMainWindow::separator:hover,
+QMainWindow::separator:pressed { background: %%PRIMARY%%; }
+
+/* QToolTip ------------------------------------------------------------- */
+QToolTip { background: %%CARD_BG%%; color: %%FG%%; }
+
+/* QSizeGrip ------------------------------------------------------------ */
+QSizeGrip { width: 0; height: 0; image: none; }
+
+/* QStatusBar ----------------------------------------------------------- */
+QStatusBar { background: %%CARD_BG%%; }
+QStatusBar::item { border: none; }
+QStatusBar QWidget { background: transparent; padding: 3px; border-radius: 4px; }
+QStatusBar > .QSizeGrip { padding: 0; }
+QStatusBar QWidget:hover { background: %%PRIMARY_LIGHT%%; }
+QStatusBar QWidget:pressed,
+QStatusBar QWidget:checked { background: %%PRIMARY_DARK%%; }
+
+/* QCheckBox / QRadioButton / QGroupBox -------------------------------- */
+QCheckBox,
+QRadioButton { border-top: 2px solid transparent; border-bottom: 2px solid transparent; }
+QCheckBox:hover,
+QRadioButton:hover { border-bottom: 2px solid %%PRIMARY%%; }
+
+QGroupBox {
+  font-weight: bold;
+  margin-top: 8px;
+  padding: 2px 1px 1px 1px;
+  border-radius: 4px;
+  border: 1px solid %%BORDER%%;
+}
+QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top left; left: 7px; margin: 0 2px 0 3px; }
+QGroupBox:flat { border-color: transparent; }
+
+/* QMenuBar ------------------------------------------------------------- */
+QMenuBar { padding: 2px; border-bottom: 1px solid %%BORDER%%; background: %%BG%%; }
+QMenuBar::item { background: transparent; padding: 4px; }
+QMenuBar::item:selected { padding: 4px; border-radius: 4px; background: %%PRIMARY_LIGHT%%; }
+QMenuBar::item:pressed { padding: 4px; margin-bottom: 0; padding-bottom: 0; }
+
+/* QToolBar ------------------------------------------------------------- */
+QToolBar {
+  padding: 1px; font-weight: bold; spacing: 2px; margin: 1px;
+  background: %%CARD_BG%%; border-style: none;
+}
+QToolBar::handle:horizontal { width: 20px; image: {{ "drag_indicator" | material_icon_url(size="20,20", color=FG) }}; }
+QToolBar::handle:vertical   { height: 20px; image: {{ "drag_indicator" | material_icon_url(size="20,20", color=FG, rotate=90) }}; }
+QToolBar::handle:horizontal:disabled { image: {{ "drag_indicator" | material_icon_url(size="20,20", color=BORDER) }}; }
+QToolBar::handle:vertical:disabled   { image: {{ "drag_indicator" | material_icon_url(size="20,20", color=BORDER, rotate=90) }}; }
+QToolBar::separator { background: %%BORDER%%; }
+QToolBar::separator:horizontal { width: 2px; margin: 0 6px; }
+QToolBar::separator:vertical   { height: 2px; margin: 6px 0; }
+QToolBar > QToolButton { background: transparent; padding: 3px; border-radius: 4px; }
+QToolBar > QToolButton:hover,
+QToolBar > QToolButton::menu-button:hover { background: %%PRIMARY_LIGHT%%; }
+QToolBar > QToolButton::menu-button { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
+QToolBar > QToolButton:pressed,
+QToolBar > QToolButton::menu-button:pressed:enabled,
+QToolBar > QToolButton:checked:enabled { background: %%PRIMARY_DARK%%; }
+QToolBar > QWidget { background: transparent; }
+
+/* QMenu ---------------------------------------------------------------- */
+QMenu { background: %%CARD_BG%%; padding: 8px 0; border-radius: 4px; }
+QMenu::separator { margin: 4px 0; height: 1px; background: %%BORDER%%; }
+QMenu::item { padding: 4px 19px; }
+QMenu::item:selected { background: %%PRIMARY_LIGHT%%; }
+QMenu::icon { padding-left: 10px; width: 14px; height: 14px; }
+QMenu::right-arrow {
+  margin: 2px; padding-left: 12px; height: 20px; width: 20px;
+  image: {{ "chevron_right" | material_icon_url(size="20,20", color=FG) }};
+}
+QMenu::right-arrow:disabled { image: {{ "chevron_right" | material_icon_url(size="20,20", color=BORDER) }}; }
+
+/* QScrollBar ------------------------------------------------------------ */
+QScrollBar { background: %%CARD_BG%%; border-radius: 4px; }
+QScrollBar:horizontal { height: 14px; }
+QScrollBar:vertical   { width: 14px; }
+QScrollBar::handle { background: %%BORDER%%; border-radius: 3px; }
+QScrollBar::handle:hover  { background: %%PRIMARY_LIGHT%%; }
+QScrollBar::handle:pressed{ background: %%PRIMARY_DARK%%; }
+QScrollBar::handle:disabled { background: %%BORDER%%; }
+QScrollBar::handle:horizontal { min-width: 8px; margin: 4px 14px; }
+QScrollBar::handle:horizontal:hover { margin: 2px 14px; }
+QScrollBar::handle:vertical { min-height: 8px; margin: 14px 4px; }
+QScrollBar::handle:vertical:hover { margin: 14px 2px; }
+QScrollBar::sub-page,
+QScrollBar::add-page { background: transparent; }
+QScrollBar::sub-line,
+QScrollBar::add-line { background: transparent; }
+QScrollBar::up-arrow    { image: {{ "arrow_drop_up" | material_icon_url(size="16,16", color=FG) }}; }
+QScrollBar::right-arrow { image: {{ "arrow_drop_up" | material_icon_url(size="16,16", color=FG, rotate=90) }}; }
+QScrollBar::down-arrow  { image: {{ "arrow_drop_up" | material_icon_url(size="16,16", color=FG, rotate=180) }}; }
+QScrollBar::left-arrow  { image: {{ "arrow_drop_up" | material_icon_url(size="16,16", color=FG, rotate=270) }}; }
+
+/* QProgressBar ---------------------------------------------------------- */
+QProgressBar { text-align: center; border: 1px solid %%BORDER%%; border-radius: 4px; }
+QProgressBar::chunk { background: %%PRIMARY%%; border-radius: 3px; }
+QProgressBar::chunk:disabled { background: %%BORDER%%; }
+
+/* QPushButton ----------------------------------------------------------- */
+QPushButton { color: %%PRIMARY%%; border: 1px solid %%BORDER%%; padding: 4px 8px; border-radius: 4px; }
+QPushButton:flat,
+QPushButton:default { border: none; padding: 5px 9px; }
+QPushButton:default { color: %%ON_PRIMARY%%; background: %%PRIMARY%%; }
+QPushButton:hover { background: %%PRIMARY_LIGHT%%; }
+QPushButton:pressed,
+QPushButton:checked:enabled { background: %%PRIMARY_DARK%%; }
+QPushButton:default:hover { background: %%PRIMARY_LIGHT%%; }
+QPushButton:default:pressed,
+QPushButton:default:checked { background: %%PRIMARY_DARK%%; }
+QPushButton:default:disabled,
+QPushButton:default:checked:disabled { background: %%BORDER%%; }
+
+/* QDialogButtonBox ------------------------------------------------------ */
+QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }
+QDialogButtonBox QPushButton { min-width: 65px; }
+
+/* QToolButton ----------------------------------------------------------- */
+QToolButton { background: transparent; padding: 5px; spacing: 2px; border-radius: 2px; }
+QToolButton:hover,
+QToolButton::menu-button:hover { background: %%PRIMARY_LIGHT%%; }
+QToolButton:pressed,
+QToolButton:checked:pressed,
+QToolButton::menu-button:pressed:enabled { background: %%PRIMARY_DARK%%; }
+QToolButton:selected:enabled,
+QToolButton:checked:enabled { background: %%PRIMARY_DARK%%; }
+QToolButton::menu-indicator {
+  height: 18px; width: 18px; top: 6px; left: 3px;
+  image: {{ "expand_less" | material_icon_url(size="18,18", color=FG, rotate=180) }};
+}
+QToolButton::menu-indicator:disabled { image: {{ "expand_less" | material_icon_url(size="18,18", color=BORDER, rotate=180) }}; }
+QToolButton::menu-arrow { image: unset; }
+QToolButton::menu-button { subcontrol-origin: margin; width: 17px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; image: {{ "expand_less" | material_icon_url(size="18,18", color=FG, rotate=180) }}; }
+/* MenuButtonPopup (Qt6 & qtpy) */
+QToolButton[popupMode=MenuButtonPopup] {
+  padding-right: 1px; margin-right: 18px; border-top-right-radius: 0; border-bottom-right-radius: 0;
+}
+
+/* QComboBox ------------------------------------------------------------- */
+QComboBox {
+  min-height: 1.5em;
+  padding: 0 8px 0 4px;
+  background: %%FIELD_BG%%;
+  border: 1px solid %%BORDER%%;
+  border-radius: 4px;
+}
+QComboBox:focus,
+QComboBox:open { border-color: %%PRIMARY%%; }
+QComboBox::drop-down { margin: 2px 2px 2px -6px; border-radius: 4px; }
+QComboBox::drop-down:editable:hover { background: %%PRIMARY_LIGHT%%; }
+QComboBox::down-arrow { image: {{ "expand_less" | material_icon_url(size="20,20", color=FG, rotate=180) }}; }
+QComboBox::down-arrow:disabled { image: {{ "expand_less" | material_icon_url(size="20,20", color=BORDER, rotate=180) }}; }
+QComboBox::down-arrow:editable:open { image: {{ "expand_less" | material_icon_url(size="20,20", color=FG) }}; }
+QComboBox::down-arrow:editable:open:disabled { image: {{ "expand_less" | material_icon_url(size="20,20", color=BORDER) }}; }
+QComboBox::item:selected { border: none; background: %%PRIMARY_LIGHT%%; border-radius: 4px; }
+QComboBox QListView[frameShape="0"], QComboBox QListView[frameShape=NoFrame] {
+  margin: 0; padding: 4px; background: %%CARD_BG%%; border-radius: 0;
+}
+QComboBox QListView::item { border-radius: 4px; }
+
+/* QSlider --------------------------------------------------------------- */
+QSlider { padding: 2px 0; }
+QSlider::groove { border-radius: 2px; }
+QSlider::groove:horizontal { height: 4px; }
+QSlider::groove:vertical   { width: 4px; }
+QSlider::sub-page:horizontal,
+QSlider::add-page:vertical,
+QSlider::handle { background: %%PRIMARY%%; }
+QSlider::sub-page:horizontal:disabled,
+QSlider::add-page:vertical:disabled,
+QSlider::handle:disabled { background: %%BORDER%%; }
+QSlider::add-page:horizontal,
+QSlider::sub-page:vertical { background: %%CARD_BG%%; }
+QSlider::handle:hover,
+QSlider::handle:pressed { background: %%PRIMARY_LIGHT%%; }
+QSlider::handle:horizontal { width: 16px; height: 8px; margin: -6px 0; border-radius: 8px; }
+QSlider::handle:vertical   { width: 8px;  height: 16px; margin: 0 -6px; border-radius: 8px; }
+
+/* QTabWidget / QTabBar -------------------------------------------------- */
+QTabWidget::pane { border: 1px solid %%BORDER%%; border-radius: 4px; }
+QTabBar { qproperty-drawBase: 0; }
+QTabBar::close-button { image: {{ "close" | material_icon_url(size="14,14", color=FG) }}; }
+QTabBar::close-button:hover { background: %%PRIMARY_LIGHT%%; border-radius: 4px; }
+QTabBar::close-button:!selected { image: {{ "close" | material_icon_url(size="14,14", color=FG) }}; }
+QTabBar::close-button:disabled { image: {{ "close" | material_icon_url(size="14,14", color=BORDER) }}; }
+QTabBar::tab { padding: 3px; border-style: solid; }
+QTabBar::tab:hover,
+QTabBar::tab:selected:hover:enabled { background: %%PRIMARY_LIGHT%%; }
+QTabBar::tab:selected:enabled { color: %%PRIMARY%%; background: %%CARD_BG%%; border-color: %%PRIMARY%%; }
+QTabBar::tab:selected:disabled,
+QTabBar::tab:only-one:selected:enabled { border-color: %%BORDER%%; }
+QTabBar::tab:top    { border-bottom-width: 2px; margin: 3px 6px 0 0; border-top-left-radius: 2px; border-top-right-radius: 2px; }
+QTabBar::tab:bottom { border-top-width: 2px; margin: 0 6px 3px 0; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; }
+QTabBar::tab:left   { border-right-width: 2px; margin: 0 0 6px 3px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; }
+QTabBar::tab:right  { border-left-width: 2px; margin: 0 3px 6px 0; border-top-right-radius: 2px; border-bottom-right-radius: 2px; }
+QTabBar::tab:top:first,
+QTabBar::tab:top:only-one,
+QTabBar::tab:bottom:first,
+QTabBar::tab:bottom:only-one { margin-left: 2px; }
+QTabBar::tab:top:last,
+QTabBar::tab:top:only-one,
+QTabBar::tab:bottom:last,
+QTabBar::tab:bottom:only-one { margin-right: 2px; }
+QTabBar::tab:left:first,
+QTabBar::tab:left:only-one,
+QTabBar::tab:right:first,
+QTabBar::tab:right:only-one { margin-top: 2px; }
+QTabBar::tab:left:last,
+QTabBar::tab:left:only-one,
+QTabBar::tab:right:last,
+QTabBar::tab:right:only-one { margin-bottom: 2px; }
+
+/* QDockWidget ----------------------------------------------------------- */
+QDockWidget { border: 1px solid %%BORDER%%; border-radius: 4px; }
+QDockWidget::title { padding: 3px; spacing: 4px; background: %%CARD_BG%%; }
+QDockWidget::close-button,
+QDockWidget::float-button { border-radius: 2px; }
+QDockWidget::close-button:hover,
+QDockWidget::float-button:hover { background: %%PRIMARY_LIGHT%%; }
+QDockWidget::close-button:pressed,
+QDockWidget::float-button:pressed { background: %%PRIMARY_DARK%%; }
+
+/* QFrame ---------------------------------------------------------------- */
+QFrame { border: 1px solid %%BORDER%%; padding: 1px; border-radius: 4px; }
+.QFrame { padding: 0; }
+QFrame[frameShape="0"] { border-color: transparent; padding: 0; }
+.QFrame[frameShape="0"] { border: none; }
+QFrame[frameShape="2"] { border-color: %%CARD_BG%%; background: %%CARD_BG%%; }
+QFrame[frameShape="4"] { max-height: 2px; border: none; background: %%BORDER%%; }
+QFrame[frameShape="5"] { max-width: 2px; border: none; background: %%BORDER%%; }
+
+/* QLCDNumber ------------------------------------------------------------ */
+QLCDNumber { min-width: 2em; margin: 2px; }
+
+/* QToolBox -------------------------------------------------------------- */
+QToolBox::tab {
+  background: %%CARD_BG%%;
+  border-bottom: 2px solid %%BORDER%%;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+QToolBox::tab:selected:enabled { border-bottom-color: %%PRIMARY%%; }
+
+/* QSplitter ------------------------------------------------------------- */
+QSplitter::handle { background: %%BORDER%%; margin: 1px 3px; }
+QSplitter::handle:hover { background: %%PRIMARY%%; }
+QSplitter::handle:horizontal { width: 5px; image: {{ "horizontal_rule" | material_icon_url(size="20,20", color=FG, rotate=90) }}; }
+QSplitter::handle:horizontal:disabled { image: {{ "horizontal_rule" | material_icon_url(size="20,20", color=BORDER, rotate=90) }}; }
+QSplitter::handle:vertical { height: 5px; image: {{ "horizontal_rule" | material_icon_url(size="20,20", color=FG) }}; }
+QSplitter::handle:vertical:disabled { image: {{ "horizontal_rule" | material_icon_url(size="20,20", color=BORDER) }}; }
+QSplitterHandle::item:hover {}
+
+/* QAbstractScrollArea --------------------------------------------------- */
+QAbstractScrollArea { margin: 1px; }
+QAbstractScrollArea::corner { background: transparent; }
+QAbstractScrollArea > .QWidget { background: transparent; }
+QAbstractScrollArea > .QWidget > .QWidget { background: transparent; }
+
+/* QMdiArea / QMdiSubWindow --------------------------------------------- */
+QMdiArea { qproperty-background: %%CARD_BG%%; border-radius: 0; }
+QMdiSubWindow { background: %%BG%%; border: 1px solid; padding: 0 3px; }
+QMdiSubWindow > QWidget { border: 1px solid %%BORDER%%; }
+
+/* QTextEdit / QPlainTextEdit ------------------------------------------- */
+QTextEdit, QPlainTextEdit { background: %%FIELD_BG%%; }
+QTextEdit:focus,
+QTextEdit:selected,
+QPlainTextEdit:focus,
+QPlainTextEdit:selected {
+  border: 1px solid %%PRIMARY%%;
+  selection-background-color: %%PRIMARY_LIGHT%%;
+}
+QTextEdit:!focus,
+QPlainTextEdit:!focus { selection-background-color: %%PRIMARY_DARK%%; }
+
+/* QAbstractItemView ----------------------------------------------------- */
+QAbstractItemView { padding: 0; alternate-background-color: transparent; selection-background-color: transparent; }
+QAbstractItemView:disabled { selection-background-color: transparent; }
+QAbstractItemView::item:alternate,
+QAbstractItemView::branch:alternate { background: %%CARD_BG%%; }
+QAbstractItemView::item:selected,
+QAbstractItemView::branch:selected { background: %%PRIMARY_LIGHT%%; }
+QAbstractItemView::item:selected:!active,
+QAbstractItemView::branch:selected:!active { background: %%PRIMARY_DARK%%; }
+QAbstractItemView QLineEdit,
+QAbstractItemView QAbstractSpinBox,
+QAbstractItemView QAbstractButton { padding: 0; margin: 1px; }
+
+/* QListView / QTreeView ------------------------------------------------- */
+QListView { padding: 1px }
+QListView, QTreeView { background: %%CARD_BG%%; }
+QListView::item:!selected:hover,
+QTreeView::item:!selected:hover,
+QTreeView::branch:!selected:hover { background: %%PRIMARY_LIGHT%%; }
+/* Indent guides & branch icons via material icons */
+QTreeView::branch { image: {{ "drag_handle" | material_icon_url(size="12,12", color=BORDER, rotate=90) }}; }
+QTreeView::branch:active { image: {{ "drag_handle" | material_icon_url(size="12,12", color=FG, rotate=90) }}; }
+QTreeView::branch:has-siblings:adjoins-item,
+QTreeView::branch:!has-children:!has-siblings:adjoins-item { image: unset; }
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings { image: {{ "chevron_right" | material_icon_url(size="18,18", color=FG) }}; }
+QTreeView::branch:has-children:!has-siblings:closed:disabled,
+QTreeView::branch:closed:has-children:has-siblings:disabled { image: {{ "chevron_right" | material_icon_url(size="18,18", color=BORDER) }}; }
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings { image: {{ "expand_less" | material_icon_url(size="18,18", color=FG, rotate=180) }}; }
+QTreeView::branch:open:has-children:!has-siblings:disabled,
+QTreeView::branch:open:has-children:has-siblings:disabled { image: {{ "expand_less" | material_icon_url(size="18,18", color=BORDER, rotate=180) }}; }
+QTreeView > QHeaderView { background: %%CARD_BG%%; }
+QTreeView > QHeaderView::section { background: %%CARD_BG%%; }
+
+/* QColumnView ----------------------------------------------------------- */
+QColumnView { background: %%CARD_BG%%; }
+QColumnViewGrip { margin: -4px; background: %%CARD_BG%%; image: {{ "drag_handle" | material_icon_url(size="16,16", color=FG, rotate=90) }}; }
+QColumnViewGrip:disabled { image: {{ "drag_handle" | material_icon_url(size="16,16", color=BORDER, rotate=90) }}; }
+
+/* QTableView ------------------------------------------------------------ */
+QTableView {
+  gridline-color: %%CARD_BG%%;
+  background: %%BG%%;
+  selection-background-color: %%PRIMARY_LIGHT%%;
+  alternate-background-color: %%CARD_BG%%;
+}
+QTableView:!active { selection-background-color: %%PRIMARY_DARK%%; }
+QTableView::item:alternate { background: %%CARD_BG%%; }
+QTableView::item:selected { background: %%PRIMARY_LIGHT%%; }
+
+QTableView QTableCornerButton::section {
+  margin: 0 1px 1px 0;
+  background: %%CARD_BG%%;
+  border-top-left-radius: 2px;
+}
+QTableView QTableCornerButton::section:pressed { background: %%PRIMARY_LIGHT%%; }
+
+QTableView > QHeaderView { background: %%BG%%; border-radius: 3px; }
+QTableView > QHeaderView::section { background: %%CARD_BG%%; }
+
+/* QHeaderView ----------------------------------------------------------- */
+QHeaderView { margin: 0; border: none; }
+QHeaderView::section { border: none; background: %%CARD_BG%%; padding-left: 4px; }
+QHeaderView::section:horizontal { margin-right: 1px; }
+QHeaderView::section:vertical   { margin-bottom: 1px; }
+QHeaderView::section:on:enabled,
+QHeaderView::section:on:pressed { color: %%PRIMARY%%; }
+QHeaderView::section:last,
+QHeaderView::section:only-one { margin: 0; }
+QHeaderView::down-arrow:horizontal { margin-left: -19px; subcontrol-position: center right; image: {{ "expand_less" | material_icon_url(size="18,18", color=FG, rotate=180) }}; }
+QHeaderView::down-arrow:horizontal:disabled { image: {{ "expand_less" | material_icon_url(size="18,18", color=BORDER, rotate=180) }}; }
+QHeaderView::up-arrow:horizontal { margin-left: -19px; subcontrol-position: center right; image: {{ "expand_less" | material_icon_url(size="18,18", color=FG) }}; }
+QHeaderView::up-arrow:horizontal:disabled { image: {{ "expand_less" | material_icon_url(size="18,18", color=BORDER) }}; }
+QHeaderView::down-arrow:vertical,
+QHeaderView::up-arrow:vertical { width: 0; height: 0; }
+
+/* QCalendarWidget ------------------------------------------------------- */
+QCalendarWidget > .QWidget {
+  background: %%BG%%;
+  border-bottom: 1px solid %%BORDER%%;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+QCalendarWidget > .QWidget > QWidget { padding: 1px; }
+QCalendarWidget .QWidget > QToolButton { border-radius: 4px; }
+QCalendarWidget > QTableView {
+  margin: 0; border: none; border-radius: 4px;
+  border-top-left-radius: 0; border-top-right-radius: 0;
+  alternate-background-color: %%CARD_BG%%;
+  selection-background-color: %%PRIMARY_LIGHT%%;
+}
+
+/* QLineEdit / QAbstractSpinBox ----------------------------------------- */
+QLineEdit,
+QAbstractSpinBox {
+  padding: 3px 4px;
+  min-height: 1em;
+  border: 1px solid %%BORDER%%;
+  background: %%FIELD_BG%%;
+  border-radius: 4px;
+}
+QLineEdit:focus,
+QAbstractSpinBox:focus { border-color: %%PRIMARY%%; }
+QAbstractSpinBox::up-button,
+QAbstractSpinBox::down-button { subcontrol-position: center right; border-radius: 4px; }
+QAbstractSpinBox::up-button:hover:on,
+QAbstractSpinBox::down-button:hover:on { background: %%PRIMARY_LIGHT%%; }
+QAbstractSpinBox::up-button { bottom: 5px; right: 4px; }
+QAbstractSpinBox::up-arrow:on { image: {{ "arrow_drop_up" | material_icon_url(size="16,16", color=FG) }}; }
+QAbstractSpinBox::up-arrow:disabled,
+QAbstractSpinBox::up-arrow:off { image: {{ "arrow_drop_up" | material_icon_url(size="16,16", color=BORDER) }}; }
+QAbstractSpinBox::down-button { top: 5px; right: 4px; }
+QAbstractSpinBox::down-arrow:on { image: {{ "arrow_drop_up" | material_icon_url(size="16,16", color=FG, rotate=180) }}; }
+QAbstractSpinBox::down-arrow:disabled,
+QAbstractSpinBox::down-arrow:off { image: {{ "arrow_drop_up" | material_icon_url(size="16,16", color=BORDER, rotate=180) }}; }
+
+/* QDateTimeEdit --------------------------------------------------------- */
+QDateTimeEdit::drop-down { padding-right: 4px; width: 16px; image: {{ "calendar_today" | material_icon_url(size="16,16", color=FG) }}; }
+QDateTimeEdit::drop-down:disabled { image: {{ "calendar_today" | material_icon_url(size="16,16", color=BORDER) }}; }
+QDateTimeEdit::down-arrow[calendarPopup=true] { image: none; }
+
+/* Menu / Combo check indicators ---------------------------------------- */
+QComboBox::indicator,
+QMenu::indicator { width: 18px; height: 18px; }
+QMenu::indicator { background: %%CARD_BG%%; margin-left: 3px; border-radius: 4px; }
+QComboBox::indicator:checked,
+QMenu::indicator:checked { image: {{ "check" | material_icon_url(size="18,18", color=FG) }}; }
+
+/* Check & Radio indicators --------------------------------------------- */
+QCheckBox, QRadioButton { spacing: 8px; }
+QGroupBox::title, QAbstractItemView::item { spacing: 6px; }
+QCheckBox::indicator, QGroupBox::indicator, QAbstractItemView::indicator, QRadioButton::indicator { height: 18px; width: 18px; }
+QCheckBox::indicator, QGroupBox::indicator, QAbstractItemView::indicator { image: {{ "check_box_outline_blank" | material_icon_url(size="18,18", color=FG) }}; }
+QCheckBox::indicator:unchecked:disabled, QGroupBox::indicator:unchecked:disabled, QAbstractItemView::indicator:unchecked:disabled { image: {{ "check_box_outline_blank" | material_icon_url(size="18,18", color=BORDER) }}; }
+QCheckBox::indicator:checked, QGroupBox::indicator:checked, QAbstractItemView::indicator:checked { image: {{ "check_box" | material_icon_url(size="18,18", color=PRIMARY) }}; }
+QCheckBox::indicator:checked:disabled, QGroupBox::indicator:checked:disabled, QAbstractItemView::indicator:checked:disabled { image: {{ "check_box" | material_icon_url(size="18,18", color=BORDER) }}; }
+QCheckBox::indicator:indeterminate, QAbstractItemView::indicator:indeterminate { image: {{ "indeterminate_check_box" | material_icon_url(size="18,18", color=PRIMARY) }}; }
+QCheckBox::indicator:indeterminate:disabled, QAbstractItemView::indicator:indeterminate:disabled { image: {{ "indeterminate_check_box" | material_icon_url(size="18,18", color=BORDER) }}; }
+
+QRadioButton::indicator:unchecked { image: {{ "radio_button_unchecked" | material_icon_url(size="18,18", color=FG) }}; }
+QRadioButton::indicator:unchecked:disabled { image: {{ "radio_button_unchecked" | material_icon_url(size="18,18", color=BORDER) }}; }
+QRadioButton::indicator:checked { image: {{ "radio_button_checked" | material_icon_url(size="18,18", color=PRIMARY) }}; }
+QRadioButton::indicator:checked:disabled { image: {{ "radio_button_checked" | material_icon_url(size="18,18", color=BORDER) }}; }
+
+/* PyQtGraph ------------------------------------------------------------- */
+PlotWidget { padding: 0; }
+ParameterTree > .QWidget > .QWidget > .QWidget > QComboBox { min-height: 1.2em; }
+ParameterTree::item, ParameterTree > .QWidget { background: %%CARD_BG%%; }

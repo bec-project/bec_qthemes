@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<theme name="dark">
+  <color name="PRIMARY">#6089ef</color>
+  <color name="PRIMARY_LIGHT">#86a9ff</color>
+  <color name="PRIMARY_DARK">#5072c7</color>
+  <color name="ON_PRIMARY">#ffffff</color>
+  <color name="BG">#1e1f22</color>
+  <color name="CARD_BG">#2b2c2f</color>
+  <color name="FIELD_BG">#26272a</color>
+  <color name="FG">#dddddd</color>
+  <color name="BORDER">#464749</color>
+  <color name="ACCENT_DEFAULT">#40B6E0</color>
+  <color name="ACCENT_HIGHLIGHT">#DB5860</color>
+  <color name="ACCENT_WARNING">#EDA200</color>
+  <color name="ACCENT_EMERGENCY">#E0534B</color>
+  <color name="ACCENT_SUCCESS">#59A869</color>
+  <color name="RADIUS_SMALL">5px</color>
+  <color name="RADIUS_MEDIUM">9px</color>
+  <color name="RADIUS_LARGE">9px</color>
+  <color name="CONTRAST_FACTOR">1.00</color>
+</theme>

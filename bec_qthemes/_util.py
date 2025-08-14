@@ -54,8 +54,17 @@ def get_logger(logger_name: str) -> logging.Logger:
 
 
 def get_cash_root_path(version: str) -> Path:
-    """Return the cash root dir path."""
-    return Path.home() / ".cache" / "bec_qthemes" / f"v{version}"
+    """Return the cache root dir path inside the repository folder.
+
+    Previously this used the user's home directory (e.g. ~/.cache). Now it is placed under
+    the repository root so artifacts are local to the project checkout.
+    Layout: <repo>/.cache/bec_qthemes/v<version>
+    """
+    # Package root: .../bec_qthemes/bec_qthemes
+    pkg_root = Path(inspect.getfile(bec_qthemes)).parent
+    # Repo root: parent of the package folder
+    repo_root = pkg_root.parent
+    return repo_root / ".cache" / "bec_qthemes" / f"v{version}"
 
 
 def get_qthemes_root_path() -> Path:
@@ -81,3 +90,39 @@ def analyze_version_str(target_version: str, version_text: str) -> bool:
         version = version_text.replace(operator, "")
         return _compare_v(target_version, operator, version)
     raise AssertionError("Text comparing versions is wrong.")
+
+
+# --- New helper: read project version from pyproject.toml ---
+
+
+def get_project_version_from_pyproject() -> str:
+    """Return the project version declared in pyproject.toml.
+
+    Looks for [project] version in the repository's pyproject.toml. Falls back to
+    bec_qthemes.__version__ and then to "0.0.0" if not found.
+    """
+    try:
+        pkg_root = Path(inspect.getfile(bec_qthemes)).parent
+        repo_root = pkg_root.parent
+        pyproject = repo_root / "pyproject.toml"
+        if pyproject.is_file():
+            text = pyproject.read_text(encoding="utf-8", errors="ignore")
+            # Find the [project] table and capture its version = "..."
+            # Use a simple state machine to avoid wrong matches in other sections.
+            in_project = False
+            for line in text.splitlines():
+                stripped = line.strip()
+                if stripped.startswith("[") and stripped.endswith("]"):
+                    in_project = stripped.lower() == "[project]"
+                    continue
+                if in_project and stripped.lower().startswith("version"):
+                    m = re.search(r'version\s*=\s*"([^"]+)"', stripped)
+                    if m:
+                        return m.group(1).strip()
+        # Fallbacks
+        v = getattr(bec_qthemes, "__version__", None)
+        if isinstance(v, str) and v:
+            return v
+    except Exception:
+        pass
+    return "0.0.0"
