@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<theme name="dark_copilot">
+    <color name="PRIMARY">#3b82f6</color>
+    <color name="PRIMARY_LIGHT">#60a5fa</color>
+    <color name="PRIMARY_DARK">#1d4ed8</color>
+    <color name="ON_PRIMARY">#ffffff</color>
+    <!-- Lighter, eye-friendly dark surfaces -->
+    <color name="BG">#1E222A</color>              <!-- lighter main background -->
+    <color name="CARD_BG">#252A34</color>         <!-- slightly elevated surfaces -->
+    <color name="FIELD_BG">#2A3038</color>       <!-- input fields background -->
+    <!-- Clear, visible borders -->
+    <color name="BORDER">#4A5568</color>
+    <color name="FG">#E2E8F0</color>
+    <color name="ACCENT_DEFAULT">#8ab4f7</color>
+    <color name="ACCENT_HIGHLIGHT">#B53565</color>
+    <color name="ACCENT_WARNING">#EAC435</color>
+    <color name="ACCENT_EMERGENCY">#CC181E</color>
+    <color name="ACCENT_SUCCESS">#2CA58D</color>
+    <!-- Corner radius variables -->
+    <color name="RADIUS_SMALL">4px</color>
+    <color name="RADIUS_MEDIUM">6px</color>
+    <color name="RADIUS_LARGE">9px</color>
+</theme>

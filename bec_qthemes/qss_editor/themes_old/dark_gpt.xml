@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<theme name="dark_gpt">
+    <color name="PRIMARY">#3b82f6</color>
+    <color name="PRIMARY_LIGHT">#60a5fa</color>
+    <color name="PRIMARY_DARK">#1d4ed8</color>
+    <color name="ON_PRIMARY">#ffffff</color>
+    <color name="BG">#0f1115</color>
+    <color name="CARD_BG">#171a21</color>
+    <color name="FIELD_BG">#10131a</color>
+    <color name="BORDER">#2a2f3a</color>
+    <color name="FG">#e8ebf1</color>
+    <color name="ACCENT_DEFAULT">#8ab4f7</color>
+    <color name="ACCENT_HIGHLIGHT">#B53565</color>
+    <color name="ACCENT_WARNING">#EAC435</color>
+    <color name="ACCENT_EMERGENCY">#CC181E</color>
+    <color name="ACCENT_SUCCESS">#2CA58D</color>
+    <!-- Corner radius variables -->
+    <color name="RADIUS_SMALL">8px</color>
+    <color name="RADIUS_MEDIUM">12px</color>
+    <color name="RADIUS_LARGE">16px</color>
+</theme>

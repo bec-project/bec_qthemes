@@ -3,7 +3,7 @@ from qtpy.QtGui import QGuiApplication, QIcon, QIconEngine, QImage, QPainter, QP
 from qtpy.QtSvg import QSvgRenderer
 
 from bec_qthemes._color import Color
-from bec_qthemes._icon.svg import Svg
+from bec_qthemes._icon.svg_util import Svg
 
 
 class SvgIconEngine(QIconEngine):

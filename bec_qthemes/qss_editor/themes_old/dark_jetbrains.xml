@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<theme name="jetbrains_dark">
+    <color name="PRIMARY">#3D7EFF</color>
+    <color name="PRIMARY_LIGHT">#6FA1FF</color>
+    <color name="PRIMARY_DARK">#2B5ED1</color>
+    <color name="ON_PRIMARY">#FFFFFF</color>
+
+    <color name="BG">#2B2D30</color>
+    <color name="CARD_BG">#32343A</color>
+    <color name="FIELD_BG">#3A3E45</color>
+    <color name="BORDER">#474C55</color>
+    <color name="FG">#E4E9F2</color>
+
+    <color name="ACCENT_DEFAULT">#40B6E0</color>
+    <color name="ACCENT_HIGHLIGHT">#DB5860</color>
+    <color name="ACCENT_WARNING">#EDA200</color>
+    <color name="ACCENT_EMERGENCY">#E0534B</color>
+    <color name="ACCENT_SUCCESS">#59A869</color>
+</theme>

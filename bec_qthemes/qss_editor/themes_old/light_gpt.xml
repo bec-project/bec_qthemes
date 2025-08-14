@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<theme name="light">
+    <color name="PRIMARY">#2F6FFF</color>
+    <color name="PRIMARY_LIGHT">#6FA1FF</color>
+    <color name="PRIMARY_DARK">#1E4FCC</color>
+    <color name="ON_PRIMARY">#FFFFFF</color>
+
+    <color name="BG">#F7F9FC</color>
+    <color name="CARD_BG">#FFFFFF</color>
+    <color name="FIELD_BG">#FFFFFF</color>
+    <color name="BORDER">#D7DCE5</color>
+    <color name="FG">#111827</color>
+
+    <color name="ACCENT_DEFAULT">#0072B2</color>
+    <color name="ACCENT_HIGHLIGHT">#CC79A7</color>
+    <color name="ACCENT_WARNING">#E69F00</color>
+    <color name="ACCENT_EMERGENCY">#D55E00</color>
+    <color name="ACCENT_SUCCESS">#009E73</color>
+</theme>

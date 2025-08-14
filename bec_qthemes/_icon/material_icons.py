@@ -11,8 +11,7 @@ from qtpy.QtSvg import QSvgRenderer
 
 from bec_qthemes._color import Color
 from bec_qthemes._icon.icon_engine import SvgIconEngine
-from bec_qthemes._icon.svg import Svg
-from bec_qthemes._style_loader import load_palette
+from bec_qthemes._icon.svg_util import Svg
 
 if TYPE_CHECKING:
     from qtpy.QtGui import QPixmap
@@ -64,11 +63,8 @@ class _MaterialIconEngine(SvgIconEngine):
 
     def paint(self, painter: QPainter, rect: QRect, mode: QIcon.Mode, state):
         """Paint the icon int ``rect`` using ``painter``."""
-        if hasattr(QGuiApplication.instance(), "theme"):
-            theme = QGuiApplication.instance().theme.theme
-            palette = load_palette(theme)
-        else:
-            palette = QGuiApplication.palette()
+        # Always rely on application palette to avoid legacy theme loader.
+        palette = QGuiApplication.palette()
 
         if self.color is None:
             if mode == QIcon.Mode.Disabled:
@@ -81,16 +77,9 @@ class _MaterialIconEngine(SvgIconEngine):
             if isinstance(self.color, str):
                 color = Color.from_hex(self.color)
             elif isinstance(self.color, dict):
-                if not hasattr(QGuiApplication.instance(), "theme"):
-                    theme = None
-                else:
-                    theme = QGuiApplication.instance().theme.theme
-                if theme in self.color:
-                    color = Color.from_hex(self.color[theme])
-                else:
-                    rgba = palette.text().color().getRgb()
-                    color = Color.from_rgba(*rgba)
-
+                # Theme-aware dict not supported without theme manager; fall back to text color
+                rgba = palette.text().color().getRgb()
+                color = Color.from_rgba(*rgba)
             elif isinstance(self.color, tuple):
                 color = Color.from_rgba(*self.color)
             elif isinstance(self.color, QColor):
@@ -139,7 +128,7 @@ def material_icon(
     convert_to_pixmap=True,
 ) -> QPixmap | QIcon:
     """
-    Return a QPixmap of a Material icon.
+    Return a QPixmap or QIcon of a Material icon.
 
     Args:
         icon_name (str): The name of the Material icon.
@@ -153,11 +142,7 @@ def material_icon(
         convert_to_pixmap (bool, optional): Whether to convert the icon to a QPixmap. Defaults to True.
 
     Returns:
-        QPixmap: The icon as a QPixmap
-
-    Examples:
-        >>> label = QLabel()
-        >>> label.setPixmap(material_icon("point_scan", size=(200, 200), rotate=10))
+        QPixmap | QIcon
     """
     svg = _MaterialIconSVG(icon_name, filled)
     if rotate != 0:
