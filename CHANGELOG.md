@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.0.0 (2025-08-22)
+
+### Features
+
+- **bec_qthemes**: Whole repo rewritten
+  ([`341cd47`](https://github.com/bec-project/bec_qthemes/commit/341cd4729d9f22f144826f456df740f7633c87c4))
+
+
 ## v0.7.1 (2025-08-22)
 
 ### Bug Fixes
