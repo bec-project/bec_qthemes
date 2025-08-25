@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v1.1.0 (2025-08-25)
+
+### Bug Fixes
+
+- Vim icon added
+  ([`d9cfce4`](https://github.com/bec-project/bec_qthemes/commit/d9cfce45e3dda98a9d9d9417d1a9c2306d7f0cd8))
+
+- **qss**: Styling review
+  ([`cfbca4f`](https://github.com/bec-project/bec_qthemes/commit/cfbca4fc079f4f804e08829ea1d43b6f1993a863))
+
+### Features
+
+- **pyqtgraph**: Pyqtgraph options added to qss
+  ([`69b0204`](https://github.com/bec-project/bec_qthemes/commit/69b0204ae532613c1cb85e70928399b6a193884a))
+
+
 ## v1.0.0 (2025-08-22)
 
 ### Features
