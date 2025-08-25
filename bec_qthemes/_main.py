@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import importlib.util
 from pathlib import Path
-from typing import Union
 
 from qtpy.QtWidgets import QApplication, QWidget
 from qtpy.QtGui import QColor
@@ -17,6 +15,129 @@ from bec_qthemes.qss_editor.qss_editor import (
     DEFAULT_RADIUS,
     _augment_mapping_with_derived,
 )
+
+
+def _apply_pyqtgraph_theme(mapping: dict) -> None:
+    # ---- PyQtGraph global theming (mirror original working approach) ---------
+    try:
+        import pyqtgraph as pg
+        from qtpy.QtWidgets import QApplication
+
+        app = QApplication.instance()
+        if app is None:
+            return
+
+        # Pick colors from theme mapping (falls back to original hardcoded scheme)
+        bg_dark = mapping.get("PLOT_BG", "#141414")
+        fg_dark = mapping.get("PLOT_FG", "#e8ebf1")
+        lbl_dark = mapping.get("PLOT_LABEL", "#FFFFFF")
+        ax_dark = mapping.get("PLOT_AXIS", "#CCCCCC")
+
+        bg_light = mapping.get("PLOT_BG_LIGHT", "#e9ecef")
+        fg_light = mapping.get("PLOT_FG_LIGHT", "#141414")
+        lbl_light = mapping.get("PLOT_LABEL_LIGHT", "#000000")
+        ax_light = mapping.get("PLOT_AXIS_LIGHT", "#666666")
+
+        # Decide current mode by luminance of PLOT_BG or BG
+        def _lum(hexs: str) -> float:
+            c = pg.functions.mkColor(hexs)
+            return 0.299 * c.red() + 0.587 * c.green() + 0.114 * c.blue()
+
+        bg_guess = (
+            mapping.get("PLOT_BG") or mapping.get("CARD_BG") or mapping.get("BG") or "#141414"
+        )
+        is_light = _lum(bg_guess) >= 140
+
+        if is_light:
+            background_color = bg_light
+            foreground_color = fg_light
+            label_color = lbl_light
+            axis_color = ax_light
+        else:
+            background_color = bg_dark
+            foreground_color = fg_dark
+            label_color = lbl_dark
+            axis_color = ax_dark
+
+        # Collect GraphicsLayoutWidgets from all top-level widgets (original approach)
+        graphic_layouts = [
+            child
+            for top in app.topLevelWidgets()
+            for child in top.findChildren(pg.GraphicsLayoutWidget)
+        ]
+
+        # Extract PlotItems hosted by GraphicsLayout (original approach via ci.items.keys())
+        plot_items = [
+            item
+            for gl in graphic_layouts
+            for item in getattr(gl, "ci", None).items.keys()
+            if getattr(gl, "ci", None)
+            if isinstance(item, pg.PlotItem)
+        ]
+
+        # Extract HistogramLUTItems similarly
+        histograms = [
+            item
+            for gl in graphic_layouts
+            for item in getattr(gl, "ci", None).items.keys()
+            if getattr(gl, "ci", None)
+            if isinstance(item, pg.HistogramLUTItem)
+        ]
+
+        # Update global defaults so NEW plots pick the right colors
+        pg.setConfigOptions(foreground=foreground_color, background=background_color)
+
+        # Update existing GraphicsLayoutWidgets
+        for gl in graphic_layouts:
+            try:
+                gl.setBackground(background_color)
+            except Exception:
+                pass
+
+        # Update existing PlotItems
+        ax_pen = pg.mkPen(color=axis_color)
+        txt_pen = pg.mkPen(color=label_color)
+        for pi in plot_items:
+            try:
+                for name in ("left", "right", "top", "bottom"):
+                    ax = pi.getAxis(name)
+                    if ax is None:
+                        continue
+                    ax.setPen(ax_pen)
+                    ax.setTextPen(txt_pen)
+                    try:
+                        ax.setLabel(color=label_color)
+                    except Exception:
+                        pass
+                # Title
+                try:
+                    pi.titleLabel.setText(pi.titleLabel.text, color=label_color)
+                except Exception:
+                    pass
+                # Legend
+                try:
+                    if hasattr(pi, "legend") and pi.legend is not None:
+                        pi.legend.setLabelTextColor(label_color)
+                        for sample, lab in getattr(pi.legend, "items", []):
+                            try:
+                                lab.setText(lab.text, color=label_color)
+                            except Exception:
+                                pass
+                except Exception:
+                    pass
+            except Exception:
+                pass
+
+        # Update HistogramLUTItem axes
+        for h in histograms:
+            try:
+                h.axis.setPen(pg.mkPen(color=axis_color))
+                h.axis.setTextPen(pg.mkPen(color=label_color))
+            except Exception:
+                pass
+
+    except Exception:
+        return
 
 
 def apply_theme(
@@ -107,6 +228,9 @@ def apply_theme(
 
     target.setStyleSheet(stylesheet)
 
+    # Sync PyQtGraph global/theme for existing and future plots
+    _apply_pyqtgraph_theme(mapping)
+
     # Emit theme changed signal
-    if hasattr(app.theme, "themeChanged"):
-        app.theme.themeChanged.emit()
+    if hasattr(app.theme, "theme_changed"):
+        app.theme.theme_changed.emit(app.theme.theme)

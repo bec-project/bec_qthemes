@@ -281,6 +281,25 @@ def _augment_mapping_with_derived(mapping: dict[str, str]) -> dict[str, str]:
 
         mapping.setdefault("TOGGLE_BG", _mix(base_c, fg_c, 0.25).name())
         mapping.setdefault("TOGGLE_BORDER", _mix(border_c, fg_c, 0.35).name())
+
+        # Plot colors: preserve previous hardcoded scheme but make it themable
+        # Decide light/dark by BG luminance
+        def _lum(c: QColor) -> float:
+            return 0.299 * c.red() + 0.587 * c.green() + 0.114 * c.blue()
+
+        is_dark = _lum(bg_c) < 128
+        mapping.setdefault("THEME_MODE", "dark" if is_dark else "light")
+        mapping.setdefault("IS_DARK", "true" if is_dark else "false")
+        if is_dark:
+            mapping.setdefault("PLOT_BG", "#141414")
+            mapping.setdefault("PLOT_FG", "#e8ebf1")
+            mapping.setdefault("PLOT_LABEL", "#ffffff")
+            mapping.setdefault("PLOT_AXIS", "#cccccc")
+        else:
+            mapping.setdefault("PLOT_BG", "#e9ecef")
+            mapping.setdefault("PLOT_FG", "#141414")
+            mapping.setdefault("PLOT_LABEL", "#000000")
+            mapping.setdefault("PLOT_AXIS", "#666666")
     except Exception:
         pass
     return mapping
@@ -299,7 +318,22 @@ def ensure_files():
 
 
 def write_theme_xml(path: Path, theme_name: str, mapping: dict[str, str]) -> None:
-    root = ET.Element("theme", {"name": theme_name})
+    # Determine and persist theme mode (dark/light) on the root for downstream consumers
+    mode = None
+    try:
+        mode = (mapping.get("THEME_MODE") or mapping.get("theme_mode") or "").strip().lower()
+        if mode not in ("dark", "light"):
+            bg = _qc(mapping.get("BG", "#0f1115"))
+            # compute perceived luminance
+            lum = 0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue()
+            mode = "dark" if lum < 128 else "light"
+        # reflect into mapping for completeness
+        mapping.setdefault("THEME_MODE", mode)
+        mapping.setdefault("IS_DARK", "true" if mode == "dark" else "false")
+    except Exception:
+        pass
+
+    root = ET.Element("theme", {"name": theme_name, "mode": mode or ""})
     for k, v in mapping.items():
         el = ET.SubElement(root, "color", {"name": k})
         el.text = v
@@ -331,6 +365,11 @@ def read_theme_xml(path: Path) -> tuple[str, dict[str, str]]:
         val = (el.text or "").strip() or el.attrib.get("value", "").strip()
         if name and val:
             mapping[name] = val
+    # Restore mode information (if provided) for downstream consumers (e.g., pyqtgraph)
+    mode = (root.attrib.get("mode", "") or mapping.get("THEME_MODE", "")).strip().lower()
+    if mode in ("dark", "light"):
+        mapping.setdefault("THEME_MODE", mode)
+        mapping.setdefault("IS_DARK", "true" if mode == "dark" else "false")
     return theme_name, mapping
 
 
@@ -1494,7 +1533,11 @@ class ThemeWidget(QWidget):
                 self._apply_target.setStyleSheet(qss)
 
             # Apply material icons programmatically using your icon engine (for buttons only)
-            self._apply_material_icons_with_engine(mapping, template)
+            if hasattr(self, "_apply_material_icons_with_engine"):
+                self._apply_material_icons_with_engine(mapping, template)
+
+            # Sync PyQtGraph global/theme for existing and future plots so labels/axes recolor
+            self._apply_pyqtgraph_theme(mapping)
 
         except Exception as e:
             QMessageBox.warning(self, "Apply Theme", f"Failed to apply theme:\n{e}")
@@ -1502,83 +1545,114 @@ class ThemeWidget(QWidget):
 
             traceback.print_exc()
 
-    def _apply_material_icons_with_engine(self, vars_map: dict[str, str], template: str):
-        """Apply material icons using your existing icon engine - only to buttons that support setIcon()."""
-        from bec_qthemes._icon.material_icons import material_icon
+    def _apply_pyqtgraph_theme(self, mapping: dict) -> None:
+        try:
+            import pyqtgraph as pg
+            from qtpy.QtWidgets import QApplication
 
-        import re
+            app = QApplication.instance()
+            if app is None:
+                return
 
-        # Only handle QPushButton and QToolButton since QComboBox uses image: in QSS
-        button_patterns = re.findall(
-            r"(QPushButton|QToolButton)\s*(?:\[[^\]]*\])?\s*\{[^}]*?icon:\s*{{\s*\"([^\"]+)\"\s*\|\s*material_icon_url\([^}]+\)\s*}};",
-            template,
-            re.MULTILINE | re.DOTALL,
-        )
+            bg_dark = mapping.get("PLOT_BG", "#141414")
+            fg_dark = mapping.get("PLOT_FG", "#e8ebf1")
+            lbl_dark = mapping.get("PLOT_LABEL", "#FFFFFF")
+            ax_dark = mapping.get("PLOT_AXIS", "#CCCCCC")
 
-        app = QApplication.instance()
-        target = self._apply_target if self._apply_target else app
+            bg_light = mapping.get("PLOT_BG_LIGHT", "#e9ecef")
+            fg_light = mapping.get("PLOT_FG_LIGHT", "#141414")
+            lbl_light = mapping.get("PLOT_LABEL_LIGHT", "#000000")
+            ax_light = mapping.get("PLOT_AXIS_LIGHT", "#666666")
 
-        # Find and apply icons to buttons using your icon engine
-        for selector_part, icon_name in button_patterns:
-            widgets = self._find_widgets_by_selector(target, selector_part)
+            def _lum(hexs: str) -> float:
+                c = pg.functions.mkColor(hexs)
+                return 0.299 * c.red() + 0.587 * c.green() + 0.114 * c.blue()
 
-            for widget in widgets:
-                try:
-                    if isinstance(widget, QPushButton):
-                        # Extract color from template or use theme default
-                        color = vars_map.get("ON_PRIMARY", "#ffffff")
-                        size = (16, 16)
-                    elif isinstance(widget, QToolButton):
-                        color = vars_map.get("FG", "#e8ebf1")
-                        size = (24, 24)
-                    else:
-                        continue
-
-                    # Use your existing material_icon function with icon engine
-                    icon = material_icon(
-                        icon_name=icon_name,
-                        size=size,
-                        color=color,
-                        convert_to_pixmap=False,  # This returns QIcon with your engine
-                    )
-                    widget.setIcon(icon)
-
-                except Exception as e:
-                    print(f"Warning: Failed to set icon {icon_name} on {widget}: {e}")
-
-        if button_patterns:
-            print(
-                f"Applied {len(button_patterns)} material icon patterns to buttons using icon engine"
+            bg_guess = (
+                mapping.get("PLOT_BG") or mapping.get("CARD_BG") or mapping.get("BG") or "#141414"
             )
+            is_light = _lum(bg_guess) >= 140
 
-    def _find_widgets_by_selector(self, target, selector: str) -> list[QWidget]:
-        """Find widgets matching a simplified CSS selector."""
-        widgets: list[QWidget] = []
+            if is_light:
+                background_color = bg_light
+                foreground_color = fg_light
+                label_color = lbl_light
+                axis_color = ax_light
+            else:
+                background_color = bg_dark
+                foreground_color = fg_dark
+                label_color = lbl_dark
+                axis_color = ax_dark
 
-        if isinstance(target, QApplication):
-            # Search all top-level widgets
-            for widget in QApplication.topLevelWidgets():
-                widgets.extend(self._find_widgets_recursive(widget, selector))
-        else:
-            widgets.extend(self._find_widgets_recursive(target, selector))
+            graphic_layouts = [
+                child
+                for top in app.topLevelWidgets()
+                for child in top.findChildren(pg.GraphicsLayoutWidget)
+            ]
 
-        return widgets
+            plot_items = [
+                item
+                for gl in graphic_layouts
+                for item in getattr(gl, "ci", None).items.keys()
+                if getattr(gl, "ci", None)
+                if isinstance(item, pg.PlotItem)
+            ]
 
-    def _find_widgets_recursive(self, widget, selector: str) -> list[QWidget]:
-        """Recursively find widgets matching the selector."""
-        widgets: list[QWidget] = []
+            histograms = [
+                item
+                for gl in graphic_layouts
+                for item in getattr(gl, "ci", None).items.keys()
+                if getattr(gl, "ci", None)
+                if isinstance(item, pg.HistogramLUTItem)
+            ]
 
-        # Simple selector matching
-        if selector == "QPushButton" and isinstance(widget, QPushButton):
-            widgets.append(widget)
-        elif selector == "QToolButton" and isinstance(widget, QToolButton):
-            widgets.append(widget)
+            pg.setConfigOptions(foreground=foreground_color, background=background_color)
 
-        # Recursively check children
-        for child in widget.findChildren(QWidget):
-            widgets.extend(self._find_widgets_recursive(child, selector))
+            for gl in graphic_layouts:
+                try:
+                    gl.setBackground(background_color)
+                except Exception:
+                    pass
 
-        return widgets
+            ax_pen = pg.mkPen(color=axis_color)
+            txt_pen = pg.mkPen(color=label_color)
+            for pi in plot_items:
+                try:
+                    for name in ("left", "right", "top", "bottom"):
+                        ax = pi.getAxis(name)
+                        if ax is None:
+                            continue
+                        ax.setPen(ax_pen)
+                        ax.setTextPen(txt_pen)
+                        try:
+                            ax.setLabel(color=label_color)
+                        except Exception:
+                            pass
+                    try:
+                        pi.titleLabel.setText(pi.titleLabel.text, color=label_color)
+                    except Exception:
+                        pass
+                    try:
+                        if hasattr(pi, "legend") and pi.legend is not None:
+                            pi.legend.setLabelTextColor(label_color)
+                            for sample, lab in getattr(pi.legend, "items", []):
+                                try:
+                                    lab.setText(lab.text, color=label_color)
+                                except Exception:
+                                    pass
+                    except Exception:
+                        pass
+                except Exception:
+                    pass
+
+            for h in histograms:
+                try:
+                    h.axis.setPen(pg.mkPen(color=axis_color))
+                    h.axis.setTextPen(pg.mkPen(color=label_color))
+                except Exception:
+                    pass
+        except Exception:
+            pass
 
 
 # ------------------------- Example app (independent) -------------------------

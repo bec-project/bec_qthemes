@@ -1212,6 +1212,11 @@ ads--CDockAreaWidget {
     padding: 2px;
 }
 
+QScrollArea {
+    border: 0px solid transparent;
+    background: transparent;
+
+}
 ads--CDockAreaTitleBar {
     background: transparent;
     padding-bottom: 0px;
@@ -1372,3 +1377,44 @@ ads--CDockContainerWidget QSplitter::handle:vertical {
 }
 ads--CDockContainerWidget QSplitter::handle:vertical:hover { background: {{ PRIMARY_LIGHT }}; }
 ads--CDockContainerWidget QSplitter::handle:vertical:pressed { background: {{ PRIMARY }}; }
+
+/* --------------------------------------------------------------------- */
+/* PyQtGraph widgets — styled without wrappers                           */
+/* --------------------------------------------------------------------- */
+/* Card-like outline; background comes from pyqtgraph (setConfigOptions) */
+GraphicsLayoutWidget, PlotWidget {
+  background: transparent;                 /* let pg draw background */
+  border: 1px solid %%BORDER%%;
+  border-radius: %%RADIUS_MEDIUM%%;
+}
+
+/* Optional: let QSS paint the background when needed */
+GraphicsLayoutWidget[drawBg="true"], PlotWidget[drawBg="true"] {
+  background: %%PLOT_BG%%;
+}
+
+/* Frameless variant if you need plots to blend into backgrounds */
+GraphicsLayoutWidget[frameless="true"], PlotWidget[frameless="true"] {
+  border: none;
+  border-radius: 0;
+}
+
+/* Remove any accidental inner frames on the viewport */
+GraphicsView, QGraphicsView {
+  background: transparent;                 /* avoid double background */
+  border: none;                            /* no inner frame */
+}
+
+/* Themed plot background wrapper; wrap PlotWidget inside this frame */
+QFrame[variant="plot_background"] {
+  background: %%PLOT_BG%%;
+  border: 1px solid %%BORDER%%;
+  border-radius: %%RADIUS_MEDIUM%%;
+}
+QFrame[variant="plot_background"][frameless="true"] {
+  border: none;
+}
+QFrame[variant="plot_background"] > * {
+  border-radius: %%RADIUS_MEDIUM%%; /* prevent inner corners from peeking */
+}
+

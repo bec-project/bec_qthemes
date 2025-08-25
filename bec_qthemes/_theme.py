@@ -64,7 +64,7 @@ class AccentColors:
 class Theme(QObject):
     """A class to hold theme information."""
 
-    themeChanged = Signal()
+    theme_changed = Signal(str)
 
     def __init__(self, theme: str, colors: dict[str, str], parent=None):
         super().__init__(parent)
@@ -72,7 +72,7 @@ class Theme(QObject):
         self._colors = {k: QColor(v) for k, v in colors.items()}
         self.accent_colors = AccentColors(self._colors)
 
-    @Property(str, notify=themeChanged)
+    @Property(str, notify=theme_changed)
     def theme(self) -> str:
         """The name of the theme."""
         return self._theme
@@ -85,7 +85,7 @@ class Theme(QObject):
         """Get a color from the theme by key."""
         return self.color(key)
 
-    @Property("QVariantMap", notify=themeChanged)
+    @Property("QVariantMap", notify=theme_changed)
     def colors(self) -> dict[str, QColor]:
         """A map of all colors in the theme."""
         return self._colors
