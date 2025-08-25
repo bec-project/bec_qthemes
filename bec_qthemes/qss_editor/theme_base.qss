@@ -22,9 +22,9 @@ QPushButton:pressed {
   color: %%ON_PRIMARY%% ;
 }
 QPushButton:disabled {
-  color: %%FG%%;
-  background: transparent;
-  border-color: %%BORDER%%;
+  color: %%DISABLED_FG%%;
+  background: %%DISABLED_BG%%;
+  border-color: %%DISABLED_BORDER%%;
 }
 
 /* Default and toggled states use PRIMARY */
@@ -147,9 +147,9 @@ QComboBox::down-arrow:pressed {
 
 /* Disabled state */
 QComboBox:disabled {
-  color: %%FG%%;
-  background: %%CARD_BG%%;
-  border-color: %%BORDER%%;
+  color: %%DISABLED_FG%%;
+  background: %%DISABLED_BG%%;
+  border-color: %%DISABLED_BORDER%%;
 }
 
 /* --------------------------------------------------------------------- */
@@ -171,9 +171,9 @@ QLineEdit:hover {
 }
 QLineEdit:focus { border-color: {{ PRIMARY }}; }
 QLineEdit:disabled {
-  color: %%FG%%;
-  background: %%CARD_BG%%;
-  border-color: %%BORDER%%;
+  color: %%DISABLED_FG%%;
+  background: %%DISABLED_BG%%;
+  border-color: %%DISABLED_BORDER%%;
 }
 QLineEdit[readOnly="true"] {
   background: %%CARD_BG%%;
@@ -208,9 +208,9 @@ QPlainTextEdit:hover, QTextEdit:hover {
 }
 QPlainTextEdit:focus, QTextEdit:focus { border-color: {{ PRIMARY }}; }
 QPlainTextEdit:disabled, QTextEdit:disabled {
-  color: %%FG%%;
-  background: %%CARD_BG%%;
-  border-color: %%BORDER%%;
+  color: %%DISABLED_FG%%;
+  background: %%DISABLED_BG%%;
+  border-color: %%DISABLED_BORDER%%;
 }
 QPlainTextEdit[readOnly="true"], QTextEdit[readOnly="true"] {
   background: %%CARD_BG%%;
@@ -251,9 +251,9 @@ QAbstractSpinBox:hover {
 }
 QAbstractSpinBox:focus { border-color: {{ PRIMARY }}; }
 QAbstractSpinBox:disabled {
-  color: %%FG%%;
-  background: %%CARD_BG%%;
-  border-color: %%BORDER%%;
+  color: %%DISABLED_FG%%;
+  background: %%DISABLED_BG%%;
+  border-color: %%DISABLED_BORDER%%;
 }
 QAbstractSpinBox[readOnly="true"] {
   background: %%CARD_BG%%;
@@ -347,9 +347,11 @@ QToolButton {
   padding: 4px 4px;
 }
 /* Extra right gutter only for menu-bearing toolbuttons */
-QToolButton[popupMode="1"],
+QToolButton[popupMode="1"]{
+    padding-right: 28px;
+    }
 QToolButton[popupMode="2"] {
-  padding-right: 28px;
+  padding: 10px;
 }
 /*LongPressToolButton{*/
 /*  padding-right: 28px;*/
@@ -366,14 +368,17 @@ QToolButton:pressed {
   color: {{ ON_PRIMARY }};
 }
 QToolButton:disabled {
-  color: %%FG%%;
-  background: transparent;
-  border-color: %%BORDER%%;
+  color: %%DISABLED_FG%%;
+  background: %%DISABLED_BG%%;
+  border-color: %%DISABLED_BORDER%%;
 }
 
 /* Checked / toggled behaves like primary */
 QToolButton:checked {
-  background: {{ CARD_BG }};
+  background: %%TOGGLE_BG%%;
+  color: %%FG%%;
+/*  border: 1px solid %%TOGGLE_BORDER%%;*/
+  border-radius: %%RADIUS_SMALL%%;
 }
 QToolButton:checked:hover { background: {{ PRIMARY_LIGHT }}; }
 QToolButton:checked:pressed { background: {{ PRIMARY_DARK }}; }
@@ -448,6 +453,41 @@ QToolButton::menu-arrow {
 QToolButton::menu-arrow:open {
   image: {{ "arrow_drop_up" | material_icon_url(size="16,16", color=FG) }};
 }
+
+/* InstantPopup menu toolbutton (opens menu immediately) */
+QToolButton[popupMode="2"] {
+  background: transparent;
+  color: %%FG%%;
+  border-radius: %%RADIUS_SMALL%%;
+  padding-right: 15px; /* room for indicator */
+}
+QToolButton[popupMode="2"]::menu-indicator {
+  subcontrol-origin: padding;
+  subcontrol-position: right center;
+  image: {{ "arrow_drop_down" | material_icon_url(size="16,16", color=FG) }};
+  width: 16px;
+  height: 16px;
+  margin: 0 6px 0 6px;
+}
+QToolButton[popupMode="2"]:hover {
+  background: {{ PRIMARY_LIGHT }};
+  border-color: {{ PRIMARY_LIGHT }};
+  color: {{ ON_PRIMARY }};
+}
+QToolButton[popupMode="2"]:pressed {
+  background: {{ PRIMARY_DARK }};
+  border-color: {{ PRIMARY_DARK }};
+  color: {{ ON_PRIMARY }};
+}
+QToolButton[popupMode="2"]:disabled {
+  color: %%DISABLED_FG%%;
+  background: %%DISABLED_BG%%;
+  border-color: %%DISABLED_BORDER%%;
+}
+QToolButton[popupMode="2"]::menu-indicator:disabled {
+  image: {{ "arrow_drop_down" | material_icon_url(size="16,16", color=BORDER) }};
+}
+
 /* Modern RadioButton */
 /*QRadioButton {*/
 /*  color: %%FG%%;*/
@@ -1037,6 +1077,7 @@ QToolBar {
     background-color: %%BG%%;
     color: %%FG%%;
     border: 1px solid %%BORDER%%;
+    margin: 2px;
 }
 QToolBar::handle:horizontal {
    image: {{ "drag_indicator" | material_icon_url(size="14,14", color=FG) }};
@@ -1049,7 +1090,39 @@ QToolBar::handle:vertical {
     margin: 2px;
     border-radius: 1px;
 }
+QToolBar::separator { background: %%BORDER%%; }
+QToolBar::separator:horizontal { width: 2px; margin: 2px 6px; }
+QToolBar::separator:vertical   { height: 2px; margin: 6px 2px; }
 
+/* Extension button: ensure size, border, and icon are present */
+QToolBarExtension,
+QToolButton#qt_toolbar_ext_button {
+    background: transparent;
+/*    border: 1px solid %%BORDER%%;*/
+    border-radius: %%RADIUS_SMALL%%;
+    padding: 2px;
+    margin: 2px;
+    min-width: 22px;
+    min-height: 22px;
+}
+
+QToolBarExtension#qt_toolbar_ext_button,
+QToolButton#qt_toolbar_ext_button {
+    qproperty-icon: {{ "double_arrow" | material_icon_url(size="16,16", color=FG) }},
+                     {{ "double_arrow" | material_icon_url(size="16,16", color=BORDER) }} disabled;
+    qproperty-iconSize: 16px;
+}
+
+QToolBarExtension:hover,
+QToolButton#qt_toolbar_ext_button:hover {
+    background: {{ PRIMARY_LIGHT }};
+    border-color: {{ PRIMARY_LIGHT }};
+}
+QToolBarExtension:pressed,
+QToolButton#qt_toolbar_ext_button:pressed {
+    background: {{ PRIMARY_DARK }};
+    border-color: {{ PRIMARY_DARK }};
+}
 /* --------------------------------------------------------------------- */
 /* Native Qt Dock Widgets (QDockWidget) — modern rounded design */
 /* --------------------------------------------------------------------- */
@@ -1148,7 +1221,7 @@ ads--CDockAreaTitleBar {
 }
 
 ads--CTitleBarButton {
-    padding: 4px 4px;
+    padding: 0px 0px;
     background: transparent;
     border: 1px solid transparent;
     border-radius: %%RADIUS_SMALL%%;
@@ -1185,7 +1258,7 @@ ads--CTitleBarButton:pressed {
     qproperty-icon: {{ "arrow_drop_down" | material_icon_url(size="16,16", color=FG) }},
        {{ "menu" | material_icon_url(size="16,16", color=BORDER) }} disabled;
     qproperty-iconSize: 16px;
-    padding-right: 0px;
+    padding: 0px;
 }
 
 /* Getting rid of tear button under the tabs menu button */
@@ -1197,7 +1270,7 @@ ads--CTitleBarButton:pressed {
 }
 
 #dockSettingsAction {
-    padding-right: 0px;
+    padding: 0px;
 }
 
 ads--CDockAreaWidget ads--CDockAreaTitleBar {
@@ -1235,7 +1308,7 @@ ads--CDockWidgetTab QLabel {
     background: transparent;
     border: 1px solid transparent;
     border-radius: %%RADIUS_SMALL%%;
-    padding: 2px 2px;
+    padding: 0px 0px;
     qproperty-icon: {{ "close" | material_icon_url(size="16,16", color=FG) }},
        {{ "close" | material_icon_url(size="16,16", color=BORDER) }} disabled;
     qproperty-iconSize: 16px;

@@ -149,21 +149,20 @@ def build_palette_from_mapping(mapping: dict[str, str]) -> QPalette:
             pass
 
     # Disabled — keep surfaces, dim text & selection
-    dim_fg = QColor(fg)
-    dim_fg.setAlpha(170)
+    dim_fg = _mix(fg, base, 0.55)
     pal.setColor(QPalette.Disabled, QPalette.Window, bg)
     pal.setColor(QPalette.Disabled, QPalette.WindowText, dim_fg)
     pal.setColor(QPalette.Disabled, QPalette.Base, base)
     pal.setColor(QPalette.Disabled, QPalette.AlternateBase, alt_bg)
     pal.setColor(QPalette.Disabled, QPalette.Text, dim_fg)
-    pal.setColor(QPalette.Disabled, QPalette.Button, header_bg)
+    pal.setColor(QPalette.Disabled, QPalette.Button, _mix(header_bg, base, 0.2))
     pal.setColor(QPalette.Disabled, QPalette.ButtonText, dim_fg)
     pal.setColor(QPalette.Disabled, QPalette.BrightText, on_primary)
     pal.setColor(QPalette.Disabled, QPalette.ToolTipBase, card)
     pal.setColor(QPalette.Disabled, QPalette.ToolTipText, dim_fg)
     pal.setColor(QPalette.Disabled, QPalette.Link, primary)
     pal.setColor(QPalette.Disabled, QPalette.LinkVisited, primary)
-    pal.setColor(QPalette.Disabled, QPalette.Highlight, _mix(primary, base, 0.6))
+    pal.setColor(QPalette.Disabled, QPalette.Highlight, _mix(primary, base, 0.75))
     pal.setColor(QPalette.Disabled, QPalette.HighlightedText, on_primary)
 
     pal.setColor(QPalette.Disabled, QPalette.Mid, header_bg)
@@ -267,6 +266,26 @@ def render_qss(vars_map: dict[str, str], template: str) -> str:
     return qss
 
 
+def _augment_mapping_with_derived(mapping: dict[str, str]) -> dict[str, str]:
+    """Ensure palette-derived variables exist so QSS doesn't have unresolved placeholders."""
+    try:
+        bg_c = _qc(mapping.get("BG", "#0f1115"))
+        base_c = _qc(mapping.get("FIELD_BG", "#10131a"))
+        card_c = _qc(mapping.get("CARD_BG", "#171a21"))
+        fg_c = _qc(mapping.get("FG", "#e8ebf1"))
+        border_c = _qc(mapping.get("BORDER", "#2a2f3a"))
+
+        mapping.setdefault("DISABLED_FG", _mix(fg_c, base_c, 0.60).name())
+        mapping.setdefault("DISABLED_BG", _mix(base_c, card_c, 0.50).name())
+        mapping.setdefault("DISABLED_BORDER", _mix(border_c, base_c, 0.60).name())
+
+        mapping.setdefault("TOGGLE_BG", _mix(base_c, fg_c, 0.25).name())
+        mapping.setdefault("TOGGLE_BORDER", _mix(border_c, fg_c, 0.35).name())
+    except Exception:
+        pass
+    return mapping
+
+
 # ------------------------- Theme XML utils -------------------------
 
 
@@ -359,6 +378,24 @@ def apply_qss_with_xml(
             mapping["ON_PRIMARY"] = "#000000" if yiq >= 140 else "#ffffff"
         except Exception:
             mapping["ON_PRIMARY"] = "#ffffff"
+    try:
+        bg_c = _qc(mapping.get("BG", "#0f1115"))
+        base_c = _qc(mapping.get("FIELD_BG", "#10131a"))
+        card_c = _qc(mapping.get("CARD_BG", "#171a21"))
+        fg_c = _qc(mapping.get("FG", "#e8ebf1"))
+        border_c = _qc(mapping.get("BORDER", "#2a2f3a"))
+
+        # Disabled palette tokens
+        mapping.setdefault("DISABLED_FG", _mix(fg_c, base_c, 0.60).name())
+        mapping.setdefault("DISABLED_BG", _mix(base_c, card_c, 0.50).name())
+        mapping.setdefault("DISABLED_BORDER", _mix(border_c, base_c, 0.60).name())
+
+        # Toggled toolbar button tokens — neutral grey derived from surfaces
+        mapping.setdefault("TOGGLE_BG", _mix(base_c, fg_c, 0.18).name())
+        mapping.setdefault("TOGGLE_BORDER", _mix(border_c, fg_c, 0.25).name())
+    except Exception:
+        pass
+    mapping = _augment_mapping_with_derived(mapping)
     app = QApplication.instance()
     # expose the current XML theme name for cache segregation BEFORE rendering
     try:
@@ -1437,6 +1474,7 @@ class ThemeWidget(QWidget):
             pal = build_palette_from_mapping(mapping)
             app = QApplication.instance()
 
+            mapping = _augment_mapping_with_derived(mapping)
             qss = render_qss(mapping, template)
 
             # Reset stylesheet first so old rules don't linger

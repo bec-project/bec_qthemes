@@ -67,6 +67,7 @@ from qtpy.QtWidgets import (
 )
 from bec_qthemes import material_icon
 from bec_qthemes.qss_editor.qss_editor import ThemeWidget
+from bec_widgets.widgets.containers.dock import BECDockArea
 
 
 def page_spinboxes_plus():
@@ -812,6 +813,16 @@ class WidgetZooWindow(QMainWindow):
             tabs.addTab(ads_panel, "ADS")
         except ImportError:
             print("AdvancedDockArea not available, skipping ADS tab.")
+
+        # Fourth Panel old Dock Area
+
+        da_panel = QWidget()
+        da_layout = QVBoxLayout(da_panel)
+        self.dock_area = BECDockArea(self)
+        da_layout.addWidget(self.dock_area)
+        tabs.addTab(da_panel, "DockArea")
+        self.dock_area.new(widget="Heatmap", position="left")
+        self.dock_area.new(widget="ScanControl", position="right")
 
         # Add tabs
         tabs.addTab(preview_panel, "Preview")
