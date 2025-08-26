@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.1.1 (2025-08-26)
+
+### Bug Fixes
+
+- **update**: Fix bug that prevented widgets from receiving theme updates
+  ([`2e7117d`](https://github.com/bec-project/bec_qthemes/commit/2e7117d3468700f953fb9471e77e17dd7bda0ae8))
+
+
 ## v1.1.0 (2025-08-25)
 
 ### Bug Fixes
