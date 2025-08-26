@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from qtpy.QtCore import QObject, Signal, Property
+from qtpy.QtCore import Property, QObject, Signal
 from qtpy.QtGui import QColor
 
 ACCENT_COLORS = {
@@ -71,6 +71,13 @@ class Theme(QObject):
         self._theme = theme
         self._colors = {k: QColor(v) for k, v in colors.items()}
         self.accent_colors = AccentColors(self._colors)
+
+    def change_theme(self, theme: str, colors: dict[str, str]) -> None:
+        """Change the theme and its colors."""
+        self._theme = theme
+        self._colors = {k: QColor(v) for k, v in colors.items()}
+        self.accent_colors = AccentColors(self._colors)
+        self.theme_changed.emit(theme)
 
     @Property(str, notify=theme_changed)
     def theme(self) -> str:
