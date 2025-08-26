@@ -2,18 +2,18 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from qtpy.QtWidgets import QApplication, QWidget
 from qtpy.QtGui import QColor
+from qtpy.QtWidgets import QApplication, QWidget
 
 from bec_qthemes._theme import Theme
 from bec_qthemes.qss_editor.qss_editor import (
+    DEFAULT_RADIUS,
     QSS_PATH,
     THEMES_PATH,
+    _augment_mapping_with_derived,
     build_palette_from_mapping,
     read_theme_xml,
     render_qss,
-    DEFAULT_RADIUS,
-    _augment_mapping_with_derived,
 )
 
 
@@ -210,10 +210,6 @@ def apply_theme(
     # Derived variables (disabled/toggle) and other tokens used by QSS
     mapping = _augment_mapping_with_derived(mapping)
 
-    # Create and set the theme object on the application instance
-    theme_obj = Theme(theme_name, mapping)
-    app.theme = theme_obj
-
     # Set theme name for cache segregation
     app.setProperty("_qthemes_current_theme", theme_name)
 
@@ -231,6 +227,9 @@ def apply_theme(
     # Sync PyQtGraph global/theme for existing and future plots
     _apply_pyqtgraph_theme(mapping)
 
-    # Emit theme changed signal
-    if hasattr(app.theme, "theme_changed"):
-        app.theme.theme_changed.emit(app.theme.theme)
+    # Create and set the theme object on the application instance
+    if getattr(app, "theme", None) is None:
+        theme_obj = Theme(theme_name, mapping)
+        app.theme = theme_obj
+    else:
+        app.theme.change_theme(theme_name, mapping)
