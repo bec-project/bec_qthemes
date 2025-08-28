@@ -165,6 +165,8 @@ def apply_theme(
 
     if not hasattr(app, "theme"):
         app.theme = None
+    elif isinstance(app.theme, Theme) and app.theme.theme == theme:
+        return  # Theme is already applied
 
     if target is None:
         target = app
