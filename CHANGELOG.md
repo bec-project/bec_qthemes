@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.1.2 (2025-08-28)
+
+### Bug Fixes
+
+- **theme**: Prevent reapplying the same theme if already set
+  ([`bc9ddcf`](https://github.com/bec-project/bec_qthemes/commit/bc9ddcfdee9e6f88cb9ff1445f93b85dab36e44a))
+
+
 ## v1.1.1 (2025-08-26)
 
 ### Bug Fixes
