@@ -1,5 +1,18 @@
+
 /* --------------------------------------------------------------------- */
-/* Buttons ------------------------------------------------------------ */
+/* Main App native Components ------------------------------------------ */
+/* --------------------------------------------------------------------- */
+QMenuBar {
+    background-color: %%CARD_BG%%;
+    border-bottom: 1px solid %%BORDER%%;
+}
+
+QStatusBar{
+    background-color: %%CARD_BG%%;
+    border-top: 1px solid %%BORDER%%;
+}
+/* --------------------------------------------------------------------- */
+/* Buttons ------------------------------------------------------------- */
 /* --------------------------------------------------------------------- */
 
 /* QPushButton — transparent with border, PRIMARY for interactions */
@@ -1418,3 +1431,32 @@ QFrame[variant="plot_background"] > * {
   border-radius: %%RADIUS_MEDIUM%%; /* prevent inner corners from peeking */
 }
 
+
+
+SideBar {
+    background-color: %%CARD_BG%%;
+}
+
+SideBar QWidget {
+    background-color: transparent;
+}
+
+NavigationItem {
+    border-radius: %%RADIUS_SMALL%%;
+    margin: 1px 1px;
+}
+NavigationItem:hover {
+    background-color: %%PRIMARY_LIGHT%%;
+}
+
+NavigationItem[toggled="true"] {
+    background-color:  %%PRIMARY_DARK%%;
+    border-radius: %%RADIUS_SMALL%%;
+}
+NavigationItem[toggled="true"] QLabel  {
+    color: %%ON_PRIMARY%%;
+}
+
+QFrame[variant="separator"] {
+  background: %%BORDER%%;
+}
