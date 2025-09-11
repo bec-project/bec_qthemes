@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.2.0 (2025-09-11)
+
+### Features
+
+- **qss**: Adjusted native and bec specific main app component
+  ([`1591f68`](https://github.com/bec-project/bec_qthemes/commit/1591f68afa11ffc30249ae67248e2d48a1fd6bb1))
+
+
 ## v1.1.2 (2025-08-28)
 
 ### Bug Fixes
