@@ -22,8 +22,12 @@ ACCENT_COLORS = {
 
 
 class AccentColors:
-    def __init__(self, colors: dict[str, QColor]) -> None:
-        self._colors = colors
+    def __init__(self, colors: dict[str, QColor] | None = None) -> None:
+        if colors is None:
+            dark_defaults = {k: QColor(v) for k, v in ACCENT_COLORS["dark"].items()}
+            self._colors = dark_defaults
+        else:
+            self._colors = colors
 
     @property
     def default(self) -> QColor:
