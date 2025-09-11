@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.2.1 (2025-09-11)
+
+### Bug Fixes
+
+- **theme**: Accent colors defaults added if not provided
+  ([`773c1b5`](https://github.com/bec-project/bec_qthemes/commit/773c1b54114990e998357900ce47d9d6de28e32f))
+
+
 ## v1.2.0 (2025-09-11)
 
 ### Features
