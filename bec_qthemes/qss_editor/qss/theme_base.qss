@@ -997,7 +997,6 @@ QTableView, QTableWidget {
 
 QTableView::item, QTableWidget::item {
   background: transparent;
-  padding: 6px 8px;
   border: none;
   border-bottom: 1px solid %%BORDER%%; /* subtle row separators */
 }
@@ -1027,7 +1026,6 @@ QTableWidget QHeaderView::section:horizontal {
   color: %%FG%%;
   border: none;
   border-bottom: 1px solid %%BORDER%%;
-  padding: 6px 8px;
   font-weight: 600;
 }
 QTableView QHeaderView::section:vertical,
