@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.2.2 (2025-10-03)
+
+### Bug Fixes
+
+- **theme_base**: Padding removed from the table items
+  ([`aa61d0c`](https://github.com/bec-project/bec_qthemes/commit/aa61d0c9e36f6a6a5b29327b3ea334588f7d1d08))
+
+
 ## v1.2.1 (2025-09-11)
 
 ### Bug Fixes
