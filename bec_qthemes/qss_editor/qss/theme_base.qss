@@ -382,8 +382,6 @@ QToolButton:pressed {
 }
 QToolButton:disabled {
   color: %%DISABLED_FG%%;
-  background: %%DISABLED_BG%%;
-  border-color: %%DISABLED_BORDER%%;
 }
 
 /* Checked / toggled behaves like primary */
