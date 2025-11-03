@@ -38,9 +38,9 @@ except ImportError:
 # ------------------------- Paths & defaults -------------------------
 
 SCRIPT_DIR = Path(__file__).parent
-THEME_QSS_PATH = SCRIPT_DIR / "theme_base.qss"
 THEMES_DIR = SCRIPT_DIR / "themes"
 QSS_DIR = SCRIPT_DIR / "qss"
+THEME_QSS_PATH = QSS_DIR / "theme_base.qss"
 # Expose paths for external use
 QSS_PATH = THEME_QSS_PATH
 THEMES_PATH = THEMES_DIR
@@ -1478,18 +1478,6 @@ class ThemeWidget(QWidget):
             # Ensure radius defaults exist so QSS placeholders are always resolved
             for k, v in DEFAULT_RADIUS.items():
                 mapping.setdefault(k, v)
-
-            # Check for PySide6QtAds and apply additional styles if available
-            if importlib.util.find_spec("PySide6QtAds"):
-                # Prefer theme_ads.qss next to selected QSS, fallback to package root
-                ads_candidates = [
-                    self.qss_path.parent / "theme_ads.qss",
-                    SCRIPT_DIR / "theme_ads.qss",
-                ]
-                for ads_qss_path in ads_candidates:
-                    if ads_qss_path.exists():
-                        template += "\n" + ads_qss_path.read_text(encoding="utf-8")
-                        break
 
             # Make sure theme name is exposed before rendering
             try:

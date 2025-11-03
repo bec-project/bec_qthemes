@@ -952,7 +952,7 @@ class WidgetZooWindow(QMainWindow):
 
 def main():
     SCRIPT_DIR = "/Users/janwyzula/PSI/bec_qthemes/bec_qthemes/qss_editor"
-    THEME_QSS_PATH = SCRIPT_DIR + "/theme_base.qss"
+    THEME_QSS_PATH = SCRIPT_DIR + "/qss/theme_base.qss"
     THEMES_DIR = SCRIPT_DIR + "/themes"
 
     app = QApplication(sys.argv)
