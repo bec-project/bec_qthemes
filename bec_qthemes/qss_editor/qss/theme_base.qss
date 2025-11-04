@@ -881,9 +881,7 @@ QTreeView, QTreeWidget {
   border: 1px solid %%BORDER%%;
   border-radius: %%RADIUS_MEDIUM%%;
   outline: 0;
-  qproperty-alternatingRowColors: true;
   alternate-background-color: %%CARD_BG%%;
-  show-decoration-selected: 1; /* keep item icons visible when selected */
   indentation: 18px;
 }
 
