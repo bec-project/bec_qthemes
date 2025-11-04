@@ -94,19 +94,14 @@ def build_palette_from_mapping(mapping: dict[str, str]) -> QPalette:
     on_primary = _qc(mapping.get("ON_PRIMARY", "#ffffff"))
 
     # Optional tokens
-    button_bg = _qc(mapping.get("BUTTON_BG", mapping.get("CARD_BG", card.name())))
-    separator = _qc(mapping.get("SEPARATOR", mapping.get("BORDER", border.name())))
+    button_bg = _qc(mapping.get("BUTTON_BG", card.name()))
+    separator = _qc(mapping.get("SEPARATOR", border.name()))
 
     # Derived smart defaults when missing
-    if "ALT_BG" in mapping:
-        alt_bg = _qc(mapping["ALT_BG"])
-    else:
-        alt_bg = _mix(base, fg if _is_dark(base) else bg, 0.06)
-
-    if "HEADER_BG" in mapping:
-        header_bg = _qc(mapping["HEADER_BG"])
-    else:
-        header_bg = _mix(card, fg if _is_dark(card) else bg, 0.07)
+    alt_bg = _qc(mapping["ALT_BG"]) if "ALT_BG" in mapping else _mix(base, fg if _is_dark(base) else bg, 0.06)
+    header_bg = _qc(mapping["HEADER_BG"]) if "HEADER_BG" in mapping else _mix(
+        card, fg if _is_dark(card) else bg, 0.07
+    )
 
     # Legacy bevel roles derived from header/sep so headers don't pick BORDER by mistake
     light1 = header_bg.lighter(125)
@@ -116,65 +111,63 @@ def build_palette_from_mapping(mapping: dict[str, str]) -> QPalette:
 
     pal = QPalette()
 
+    placeholder_role = getattr(QPalette, "PlaceholderText", None)
+
+    common_roles = {
+        QPalette.Window: bg,
+        QPalette.WindowText: fg,
+        QPalette.Base: base,
+        QPalette.AlternateBase: alt_bg,
+        QPalette.Text: fg,
+        QPalette.Button: button_bg,
+        QPalette.ButtonText: fg,
+        QPalette.BrightText: on_primary,
+        QPalette.ToolTipBase: card,
+        QPalette.ToolTipText: fg,
+        QPalette.Link: primary,
+        QPalette.LinkVisited: primary,
+        QPalette.Highlight: primary,
+        QPalette.HighlightedText: on_primary,
+        QPalette.Mid: header_bg,  # some styles sample Mid for sections
+        QPalette.Dark: darkline,
+        QPalette.Shadow: shadow,
+        QPalette.Light: light1,
+        QPalette.Midlight: light2,
+    }
+
     for group in (QPalette.Active, QPalette.Inactive):
-        # Containers
-        pal.setColor(group, QPalette.Window, bg)
-        pal.setColor(group, QPalette.WindowText, fg)
-        # Viewports / editors
-        pal.setColor(group, QPalette.Base, base)
-        pal.setColor(group, QPalette.AlternateBase, alt_bg)
-        pal.setColor(group, QPalette.Text, fg)
-        # Buttons & many headers/toolbars
-        pal.setColor(group, QPalette.Button, header_bg)
-        pal.setColor(group, QPalette.ButtonText, fg)
-        pal.setColor(group, QPalette.BrightText, on_primary)
-        # Tooltips
-        pal.setColor(group, QPalette.ToolTipBase, card)
-        pal.setColor(group, QPalette.ToolTipText, fg)
-        # Links / selection
-        pal.setColor(group, QPalette.Link, primary)
-        pal.setColor(group, QPalette.LinkVisited, primary)
-        pal.setColor(group, QPalette.Highlight, primary)
-        pal.setColor(group, QPalette.HighlightedText, on_primary)
-        # Bevel/sections
-        pal.setColor(group, QPalette.Mid, header_bg)  # some styles sample Mid for sections
-        pal.setColor(group, QPalette.Dark, darkline)
-        pal.setColor(group, QPalette.Shadow, shadow)
-        pal.setColor(group, QPalette.Light, light1)
-        pal.setColor(group, QPalette.Midlight, light2)
-        # Placeholder
-        try:
-            pal.setColor(group, QPalette.PlaceholderText, _mix(fg, base, 0.55))
-        except Exception:
-            pass
+        for role, color in common_roles.items():
+            pal.setColor(group, role, color)
+        if placeholder_role is not None:
+            pal.setColor(group, placeholder_role, _mix(fg, base, 0.55))
 
     # Disabled — keep surfaces, dim text & selection
     dim_fg = _mix(fg, base, 0.55)
-    pal.setColor(QPalette.Disabled, QPalette.Window, bg)
-    pal.setColor(QPalette.Disabled, QPalette.WindowText, dim_fg)
-    pal.setColor(QPalette.Disabled, QPalette.Base, base)
-    pal.setColor(QPalette.Disabled, QPalette.AlternateBase, alt_bg)
-    pal.setColor(QPalette.Disabled, QPalette.Text, dim_fg)
-    pal.setColor(QPalette.Disabled, QPalette.Button, _mix(header_bg, base, 0.2))
-    pal.setColor(QPalette.Disabled, QPalette.ButtonText, dim_fg)
-    pal.setColor(QPalette.Disabled, QPalette.BrightText, on_primary)
-    pal.setColor(QPalette.Disabled, QPalette.ToolTipBase, card)
-    pal.setColor(QPalette.Disabled, QPalette.ToolTipText, dim_fg)
-    pal.setColor(QPalette.Disabled, QPalette.Link, primary)
-    pal.setColor(QPalette.Disabled, QPalette.LinkVisited, primary)
-    pal.setColor(QPalette.Disabled, QPalette.Highlight, _mix(primary, base, 0.75))
-    pal.setColor(QPalette.Disabled, QPalette.HighlightedText, on_primary)
-
-    pal.setColor(QPalette.Disabled, QPalette.Mid, header_bg)
-    pal.setColor(QPalette.Disabled, QPalette.Dark, darkline)
-    pal.setColor(QPalette.Disabled, QPalette.Shadow, shadow)
-    pal.setColor(QPalette.Disabled, QPalette.Light, light1)
-    pal.setColor(QPalette.Disabled, QPalette.Midlight, light2)
-
-    try:
-        pal.setColor(QPalette.Disabled, QPalette.PlaceholderText, _mix(fg, base, 0.7))
-    except Exception:
-        pass
+    disabled_roles = {
+        QPalette.Window: bg,
+        QPalette.WindowText: dim_fg,
+        QPalette.Base: base,
+        QPalette.AlternateBase: alt_bg,
+        QPalette.Text: dim_fg,
+        QPalette.Button: _mix(button_bg, base, 0.2),
+        QPalette.ButtonText: dim_fg,
+        QPalette.BrightText: on_primary,
+        QPalette.ToolTipBase: card,
+        QPalette.ToolTipText: dim_fg,
+        QPalette.Link: primary,
+        QPalette.LinkVisited: primary,
+        QPalette.Highlight: _mix(primary, base, 0.75),
+        QPalette.HighlightedText: on_primary,
+        QPalette.Mid: header_bg,
+        QPalette.Dark: darkline,
+        QPalette.Shadow: shadow,
+        QPalette.Light: light1,
+        QPalette.Midlight: light2,
+    }
+    for role, color in disabled_roles.items():
+        pal.setColor(QPalette.Disabled, role, color)
+    if placeholder_role is not None:
+        pal.setColor(QPalette.Disabled, placeholder_role, _mix(fg, base, 0.7))
 
     return pal
 
