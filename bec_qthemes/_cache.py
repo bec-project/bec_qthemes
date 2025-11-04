@@ -17,9 +17,9 @@ New options:
 - Without purge, empty directories left behind are cleaned up automatically.
 """
 
-from pathlib import Path
 import re
 import shutil
+from pathlib import Path
 
 from bec_qthemes._util import get_cash_root_path, get_project_version_from_pyproject
 

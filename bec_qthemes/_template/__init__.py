@@ -5,12 +5,12 @@ from __future__ import annotations
 from bec_qthemes._template.engine import Template
 from bec_qthemes._template.filter import (
     color,
+    corner,
+    env,
+    material_icon_path,
+    material_icon_url,
     palette_format,
     url,
-    env,
-    corner,
-    material_icon_url,
-    material_icon_path,
 )
 
 # Create filters dictionary for the template engine
