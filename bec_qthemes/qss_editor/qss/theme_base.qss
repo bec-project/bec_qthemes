@@ -1182,77 +1182,88 @@ QDockWidget {
 /*}*/
 
 /* --------------------------------------------------------------------- */
-/* Advanced Docking System (ADS) — transparent with borders and PRIMARY highlights */
+/* Advanced Docking System (ADS)                                         */
 /* --------------------------------------------------------------------- */
-
-/******************************************************************************/
-/* * CDockManager*/
-/* *****************************************************************************/
-/*ads--CDockManager {*/
-/*    background: transparent;*/
-/*    border: none;*/
-/*}*/
-
-/******************************************************************************/
-/* * CDockContainerWidget*/
-/* *****************************************************************************/
-/*ads--CDockContainerWidget {*/
-/*    background: %%BG%%;*/
-/*    padding: 2px;*/
-/*    border-radius: %%RADIUS_MEDIUM%%;*/
-/*    border: none;*/
-/*}*/
-/******************************************************************************/
-/* * CDockWidget*/
-/* *****************************************************************************/
 
 CDockWidget[index="0"] {
     border:none;
-    padding: 2px;
-}
-/******************************************************************************/
-/* * CDockAreaWidget*/
-/* *****************************************************************************/
-ads--CDockAreaWidget {
-    border: 1px solid %%BORDER%%;
-    border-radius: %%RADIUS_MEDIUM%%;
-    padding: 2px;
 }
 
 QScrollArea {
     border: 0px solid transparent;
     background: transparent;
-
 }
+
+/******************************************************************************/
+/* * CDockAreaWidget*/
+/* *****************************************************************************/
+ads--CDockAreaWidget {
+    border: 1px solid %%BORDER%%;
+    background: transparent;
+}
+
+ads--CDockManager[variant="cards"] ads--CDockAreaWidget {
+    border-radius: %%RADIUS_MEDIUM%%;
+    padding: 2px;
+}
+
+ads--CDockManager[variant="compact"] ads--CDockAreaWidget {
+    padding: 0px;
+}
+
+/******************************************************************************/
+/* * ads TitleBarButton + ads CDockWidgetTab */
+/* *****************************************************************************/
+ads--CDockWidgetTab {
+    background:transparent;
+    border: none;
+    padding: 2px;
+    border-bottom: 2px solid transparent;
+    qproperty-iconSize: 16px 16px;
+}
+
 ads--CDockAreaTitleBar {
     background: transparent;
-    padding-bottom: 0px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-bottom: 1px;
     border-bottom: 1px solid %%BORDER%%;
 }
+ads--CDockWidgetTab:hover {
+    border-bottom: 2px solid %%PRIMARY_LIGHT%%;
+}
+ads--CDockWidgetTab[activeTab="true"] {
+    border-bottom: 2px solid %%BORDER%%;
+}
+ads--CDockWidgetTab[focused="true"] {
+    border-bottom-color: %%PRIMARY%%;
+    border-bottom: 2px solid %%PRIMARY%%;
+}
 
-ads--CTitleBarButton {
-    padding: 0px 0px;
+/******************************************************************************/
+/* * ads TitleBar Icons */
+/* *****************************************************************************/
+#tabCloseButton {
+    margin-top: 2px;
     background: transparent;
     border: 1px solid transparent;
     border-radius: %%RADIUS_SMALL%%;
+    padding: 0px 0px;
+    qproperty-icon: {{ "close" | material_icon_url(size="16,16", color=FG) }},
+       {{ "close" | material_icon_url(size="16,16", color=BORDER) }} disabled;
+    qproperty-iconSize: 16px;
 }
-ads--CTitleBarButton[focused=true] {
-    background: {{ PRIMARY }};
-    border-color: {{ PRIMARY }};
-    color: {{ ON_PRIMARY }};
+
+#tabCloseButton:hover {
+    background:  %%PRIMARY_LIGHT%% ;
+    border-color:  %%PRIMARY_LIGHT%% ;
+    color:  %%FG%% ;
 }
-ads--CTitleBarButton:hover {
-    background: {{ PRIMARY_LIGHT }};
-    border-color: {{ PRIMARY_LIGHT }};
-    color: {{ ON_PRIMARY }};
+
+#tabCloseButton:pressed {
+    background:  %%PRIMARY_DARK%% ;
+    border-color:  %%PRIMARY_DARK%% ;
+    color:  %%FG%% ;
 }
-ads--CTitleBarButton:pressed {
-    background: {{ PRIMARY_DARK }};
-    border-color: {{ PRIMARY_DARK }};
-    color: {{ ON_PRIMARY }};
-}
+
 
 #dockAreaCloseButton {
     qproperty-icon: {{ "close" | material_icon_url(size="16,16", color=FG) }},
@@ -1272,7 +1283,6 @@ ads--CTitleBarButton:pressed {
     qproperty-iconSize: 16px;
     padding: 0px;
 }
-
 /* Getting rid of tear button under the tabs menu button */
 #tabsMenuButton::menu-indicator,
 #tabsMenuButton::tear {
@@ -1284,106 +1294,26 @@ ads--CTitleBarButton:pressed {
 #dockSettingsAction {
     padding: 0px;
 }
-
-ads--CDockAreaWidget ads--CDockAreaTitleBar {
-    border-bottom: 1px solid transparent;
-}
-
-/******************************************************************************/
-/* * CDockWidgetTab*/
-/* *****************************************************************************/
-ads--CDockWidgetTab {
-    background:transparent;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 2px;
-    margin-bottom: 4px;
-    margin-right: 12px;
-    qproperty-iconSize: 16px 16px;
-}
-ads--CDockWidgetTab:hover {
-    border-bottom-color: {{ PRIMARY_LIGHT }};
-}
-ads--CDockWidgetTab[activeTab="true"] {
-    border-bottom-color: {{ BORDER }};
-}
-ads--CDockWidgetTab[focused="true"] {
-    border-bottom-color: %%PRIMARY%%;
-}
-
-ads--CDockWidgetTab QLabel {
-    color: %%FG%%;
-}
-
-#tabCloseButton {
-    margin-top: 2px;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: %%RADIUS_SMALL%%;
-    padding: 0px 0px;
-    qproperty-icon: {{ "close" | material_icon_url(size="16,16", color=FG) }},
-       {{ "close" | material_icon_url(size="16,16", color=BORDER) }} disabled;
-    qproperty-iconSize: 16px;
-}
-
-#tabCloseButton:hover {
-    background: {{ PRIMARY_LIGHT }};
-    border-color: {{ PRIMARY_LIGHT }};
-    color: {{ FG }};
-}
-
-#tabCloseButton:pressed {
-    background: {{ PRIMARY_DARK }};
-    border-color: {{ PRIMARY_DARK }};
-    color: {{ FG }};
-}
-
-/******************************************************************************/
-/* * CDockWidget*/
-/* *****************************************************************************/
-/*ads--CDockWidget {*/
-/*    background: transparent;*/
-/*    border: 1px solid %%BORDER%%;*/
-/*    border-radius: %%RADIUS_MEDIUM%%;*/
-/*}*/
-
 /* --------------------------------------------------------------------- */
 /* ADS Splitters and Resize Handles — simplified with PRIMARY highlights */
 /* --------------------------------------------------------------------- */
-/* Horizontal handle (between top/bottom panes) */
-ads--CResizeHandle:horizontal {
-    height: 4px;
-    margin: 4px 0;
-}
-ads--CResizeHandle:horizontal:hover { background: {{ PRIMARY_LIGHT }}; }
-ads--CResizeHandle:horizontal:pressed { background: {{ PRIMARY }}; }
 
-/* Vertical handle (between left/right panes) */
-ads--CResizeHandle:vertical {
-    width: 4px;
-    margin: 0 4px;
-}
-ads--CResizeHandle:vertical:hover { background: {{ PRIMARY_LIGHT }}; }
-ads--CResizeHandle:vertical:pressed { background: {{ PRIMARY }}; }
-
-/* Optional: also style the QSplitter handle within ADS containers for consistency */
-ads--CDockContainerWidget QSplitter::handle:horizontal {
+/* Cards variant: no visible splitter, just a larger transparent handle area */
+ads--CDockManager[variant="cards"] ads--CDockSplitter::handle {
     background: transparent;
     height: 8px;
     margin: 0;
     border-radius: 2px;
 }
-ads--CDockContainerWidget QSplitter::handle:horizontal:hover { background: {{ PRIMARY_LIGHT }}; }
-ads--CDockContainerWidget QSplitter::handle:horizontal:pressed { background: {{ PRIMARY }}; }
-
-ads--CDockContainerWidget QSplitter::handle:vertical {
+/* Compact variant: no splitter, docks without gaps */
+ads--CDockManager[variant="compact"] ads--CDockSplitter::handle {
     background: transparent;
-    height: 8px;
-    margin: 0 ;
-    border-radius: 2px;
+    height: 0px;
+    margin: 0;
 }
-ads--CDockContainerWidget QSplitter::handle:vertical:hover { background: {{ PRIMARY_LIGHT }}; }
-ads--CDockContainerWidget QSplitter::handle:vertical:pressed { background: {{ PRIMARY }}; }
+ads--CDockManager ads--CDockSplitter::handle:pressed {
+    background: %%PRIMARY%%;
+}
 
 /* --------------------------------------------------------------------- */
 /* PyQtGraph widgets — styled without wrappers                           */

@@ -1,6 +1,6 @@
-from bec_qthemes._main import apply_theme
-from bec_qthemes._icon.material_icons import material_icon
 from bec_qthemes._cache import clear_svg_cache
+from bec_qthemes._icon.material_icons import material_icon
+from bec_qthemes._main import apply_theme
 
 __all__ = [
     # Icons

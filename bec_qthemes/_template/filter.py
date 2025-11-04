@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import platform
-from pathlib import Path
 import re
+from pathlib import Path
 
-from qtpy.QtCore import qVersion, QCoreApplication
+from qtpy.QtCore import QCoreApplication, qVersion
 from qtpy.QtGui import QColor
 
 # from bec_qthemes import __version__  # unused; cache version resolved from pyproject
@@ -196,8 +196,8 @@ def url(color_val, id: str, rotate: int = 0) -> str:
             return f"url({path_str})"
 
         # Load built-in svg resource map only when needed
-        from bec_qthemes._icon.svg_util import Svg
         from bec_qthemes._color import Color
+        from bec_qthemes._icon.svg_util import Svg
 
         try:
             svg = Svg(id)

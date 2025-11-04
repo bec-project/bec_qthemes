@@ -1,29 +1,28 @@
+import importlib.util
 import sys
 from pathlib import Path
 from xml.etree import ElementTree as ET
-import importlib.util
 
-from qtpy.QtCore import QObject, QEvent
-from qtpy.QtCore import Qt, QFileSystemWatcher, QTimer, QPoint
+from qtpy.QtCore import QEvent, QFileSystemWatcher, QObject, QPoint, Qt, QTimer
 from qtpy.QtGui import QColor, QCursor, QPalette
 from qtpy.QtWidgets import (
     QApplication,
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-    QLabel,
-    QPushButton,
-    QLineEdit,
-    QComboBox,
     QCheckBox,
-    QSlider,
     QColorDialog,
+    QComboBox,
     QFrame,
-    QScrollArea,
-    QMessageBox,
+    QHBoxLayout,
     QInputDialog,
-    QToolButton,
+    QLabel,
+    QLineEdit,
+    QMessageBox,
+    QPushButton,
     QRubberBand,
+    QScrollArea,
+    QSlider,
+    QToolButton,
+    QVBoxLayout,
+    QWidget,
 )
 
 # Import template system for material icon support
