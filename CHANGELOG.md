@@ -1,6 +1,31 @@
 # CHANGELOG
 
 
+## v1.3.0 (2025-11-18)
+
+### Bug Fixes
+
+- Duplicate theme_base.qss removed
+  ([`ce81f1a`](https://github.com/bec-project/bec_qthemes/commit/ce81f1af1ad0507e6a309ad59f57ce58a677a3c4))
+
+- Imports optimised
+  ([`06dba6e`](https://github.com/bec-project/bec_qthemes/commit/06dba6edbe53fbfe46b3b89a6c43874b237c048b))
+
+- **qss_editor**: Minor palette optimization
+  ([`b434e35`](https://github.com/bec-project/bec_qthemes/commit/b434e35e228d15582b1e203a423dfd499a4802fe))
+
+- **theme_base**: Removed border and background from disabled QToolButton
+  ([`45a64ca`](https://github.com/bec-project/bec_qthemes/commit/45a64ca8e49f584e8e225f1c6b8296f8dac257a8))
+
+- **theme_base**: Removed default alternating rows
+  ([`b69f33f`](https://github.com/bec-project/bec_qthemes/commit/b69f33f11e6495aa5f992a79e7331a1a7227e37f))
+
+### Features
+
+- **ads**: Cards and compact variant styling
+  ([`95a5628`](https://github.com/bec-project/bec_qthemes/commit/95a5628b50a24f0f8e3778e90e68624c1a8c5e4c))
+
+
 ## v1.2.2 (2025-10-03)
 
 ### Bug Fixes
