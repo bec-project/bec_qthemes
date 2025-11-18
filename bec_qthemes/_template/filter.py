@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import platform
 import re
-from pathlib import Path
 
 from qtpy.QtCore import QCoreApplication, qVersion
 from qtpy.QtGui import QColor

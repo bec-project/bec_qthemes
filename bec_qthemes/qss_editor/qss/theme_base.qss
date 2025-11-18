@@ -1234,7 +1234,6 @@ ads--CDockWidgetTab[activeTab="true"] {
     border-bottom: 2px solid %%BORDER%%;
 }
 ads--CDockWidgetTab[focused="true"] {
-    border-bottom-color: %%PRIMARY%%;
     border-bottom: 2px solid %%PRIMARY%%;
 }
 
