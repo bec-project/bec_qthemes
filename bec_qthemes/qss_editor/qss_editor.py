@@ -1,4 +1,3 @@
-import importlib.util
 import sys
 from pathlib import Path
 from xml.etree import ElementTree as ET
@@ -97,9 +96,15 @@ def build_palette_from_mapping(mapping: dict[str, str]) -> QPalette:
     separator = _qc(mapping.get("SEPARATOR", border.name()))
 
     # Derived smart defaults when missing
-    alt_bg = _qc(mapping["ALT_BG"]) if "ALT_BG" in mapping else _mix(base, fg if _is_dark(base) else bg, 0.06)
-    header_bg = _qc(mapping["HEADER_BG"]) if "HEADER_BG" in mapping else _mix(
-        card, fg if _is_dark(card) else bg, 0.07
+    alt_bg = (
+        _qc(mapping["ALT_BG"])
+        if "ALT_BG" in mapping
+        else _mix(base, fg if _is_dark(base) else bg, 0.06)
+    )
+    header_bg = (
+        _qc(mapping["HEADER_BG"])
+        if "HEADER_BG" in mapping
+        else _mix(card, fg if _is_dark(card) else bg, 0.07)
     )
 
     # Legacy bevel roles derived from header/sep so headers don't pick BORDER by mistake
