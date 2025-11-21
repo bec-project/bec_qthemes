@@ -14,7 +14,7 @@ class SvgIconEngine(QIconEngine):
         super().__init__()
         self._svg = svg
 
-    def paint(self, painter: QPainter, rect: QRect, mode: QIcon.Mode, state):
+    def paint(self, painter: QPainter, rect: QRect, mode: QIcon.Mode | None, state):
         """Paint the icon int ``rect`` using ``painter``."""
         palette = QGuiApplication.palette()
 
@@ -34,7 +34,7 @@ class SvgIconEngine(QIconEngine):
         """Required to subclass abstract QIconEngine."""
         return SvgIconEngine(self._svg)
 
-    def pixmap(self, size: QSize, mode: QIcon.Mode, state: QIcon.State):
+    def pixmap(self, size: QSize, mode: QIcon.Mode | None, state: QIcon.State | None) -> QPixmap:
         """Return the icon as a pixmap with requested size, mode, and state."""
         # Make size to square.
         min_size = min(size.width(), size.height())

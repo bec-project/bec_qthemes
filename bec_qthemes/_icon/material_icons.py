@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import os
 from functools import lru_cache
-from typing import TYPE_CHECKING, Literal, overload
+from typing import TYPE_CHECKING, Literal, TypeVar, overload
 
 from qtpy.QtCore import QRect, QRectF, QSize
 from qtpy.QtGui import QColor, QGuiApplication, QIcon, QPainter, QPalette, QPixmap
@@ -59,7 +59,7 @@ class _MaterialIconEngine(SvgIconEngine):
     def __init__(self, svg: _MaterialIconSVG) -> None:
         """Initialize icon engine."""
         super().__init__(svg)
-        self.color = None
+        self.color: QColor | None = None
 
     def paint(self, painter: QPainter, rect: QRect, mode: QIcon.Mode, state):
         """Paint the icon int ``rect`` using ``painter``."""
@@ -86,6 +86,8 @@ class _MaterialIconEngine(SvgIconEngine):
                 color = Color.from_rgba(
                     self.color.red(), self.color.green(), self.color.blue(), self.color.alpha()
                 )
+            else:
+                color = Color.from_hex("#000000")
         if color is not None:
             self._svg.colored(color)
 
@@ -94,39 +96,19 @@ class _MaterialIconEngine(SvgIconEngine):
         renderer.render(painter, QRectF(rect))
 
 
-@overload
-def material_icon(
-    icon_name: str,
-    size: tuple | QSize | None = None,
-    color: str | tuple | QColor | dict[Literal["dark", "light"], str] | None = None,
-    rotate=0,
-    mode=None,
-    filled=False,
-    convert_to_pixmap=True,
-) -> QPixmap: ...
-
-
-@overload
-def material_icon(
-    icon_name: str,
-    size: tuple | QSize | None = None,
-    color: str | tuple | QColor | dict[Literal["dark", "light"], str] | None = None,
-    rotate=0,
-    mode=None,
-    filled=False,
-    convert_to_pixmap=False,
-) -> QIcon: ...
+_T = TypeVar("_T", QIcon, QPixmap)
 
 
 def material_icon(
     icon_name: str,
-    size: tuple | QSize | None = None,
+    size: tuple[int, int] | QSize | None = None,
     color: str | tuple | QColor | dict[Literal["dark", "light"], str] | None = None,
-    rotate=0,
+    rotate: int = 0,
+    *,
     mode=None,
     filled=False,
-    convert_to_pixmap=True,
-) -> QPixmap | QIcon:
+    icon_type: type[_T] = QPixmap,
+) -> _T:
     """
     Return a QPixmap or QIcon of a Material icon.
 
@@ -139,7 +121,7 @@ def material_icon(
         rotate (int, optional): The rotation of the icon in degrees. Defaults to 0.
         mode ([type], optional): The mode of the icon. Defaults to None.
         filled (bool, optional): Whether to use the filled version of the icon. Defaults to False.
-        convert_to_pixmap (bool, optional): Whether to convert the icon to a QPixmap. Defaults to True.
+        icon_type (type[QIcon | QPixmap], optional): Which type of icon to return Defaults to QPixmap.
 
     Returns:
         QPixmap | QIcon
@@ -151,15 +133,17 @@ def material_icon(
     icon = _MaterialIconEngine(svg)
     if color is not None:
         icon.color = color
-    if not convert_to_pixmap:
-        return QIcon(icon)
+    if icon_type == QIcon:
+        return icon_type(icon)
+    elif icon_type == QPixmap:
+        if size is None:
+            size = QSize(50, 50)
+        elif isinstance(size, tuple):
+            size = QSize(*size)
 
-    if size is None:
-        size = QSize(50, 50)
-    elif isinstance(size, tuple):
-        size = QSize(*size)
-
-    return icon.pixmap(size, mode, state=None)
+        return icon_type(icon.pixmap(size, mode, state=None))
+    else:
+        raise TypeError("icon_type must be QIcon or QPixmap")
 
 
 if __name__ == "__main__":
