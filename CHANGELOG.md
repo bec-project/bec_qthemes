@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.3.1 (2025-11-23)
+
+### Bug Fixes
+
+- **material_icon**: Specify type hints for convert_to_pixmap parameter
+  ([`58b0cdd`](https://github.com/bec-project/bec_qthemes/commit/58b0cdd896cfa2432c8fe6da708e31e4153655ff))
+
+
 ## v1.3.0 (2025-11-18)
 
 ### Bug Fixes
