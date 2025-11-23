@@ -102,7 +102,7 @@ def material_icon(
     rotate=0,
     mode=None,
     filled=False,
-    convert_to_pixmap=True,
+    convert_to_pixmap: Literal[True] = True,
 ) -> QPixmap: ...
 
 
@@ -114,7 +114,7 @@ def material_icon(
     rotate=0,
     mode=None,
     filled=False,
-    convert_to_pixmap=False,
+    convert_to_pixmap: Literal[False] = False,
 ) -> QIcon: ...
 
 
@@ -125,7 +125,7 @@ def material_icon(
     rotate=0,
     mode=None,
     filled=False,
-    convert_to_pixmap=True,
+    convert_to_pixmap: bool = True,
 ) -> QPixmap | QIcon:
     """
     Return a QPixmap or QIcon of a Material icon.
