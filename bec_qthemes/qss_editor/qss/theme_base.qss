@@ -882,7 +882,6 @@ QTreeView, QTreeWidget {
   border-radius: %%RADIUS_MEDIUM%%;
   outline: 0;
   alternate-background-color: %%CARD_BG%%;
-  indentation: 18px;
 }
 
 QTreeView::item, QTreeWidget::item {
