@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.3.3 (2025-11-27)
+
+### Bug Fixes
+
+- **QTreeView**: Remove indentation from css file as this is no valid property
+  ([`e8c5e8e`](https://github.com/bec-project/bec_qthemes/commit/e8c5e8efd6de7128d65bed344f9f8126c7b674f2))
+
+
 ## v1.3.2 (2025-11-27)
 
 ### Bug Fixes
