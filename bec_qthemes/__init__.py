@@ -1,4 +1,5 @@
 from bec_qthemes._cache import clear_svg_cache
+from bec_qthemes._hover_gradient import enable_hover_gradient
 from bec_qthemes._icon.material_icons import material_icon
 from bec_qthemes._main import apply_theme
 
@@ -8,4 +9,5 @@ __all__ = [
     # Public API
     "apply_theme",
     "clear_svg_cache",
+    "enable_hover_gradient",
 ]
