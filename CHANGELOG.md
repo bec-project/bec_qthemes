@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.3.2 (2025-11-27)
+
+### Bug Fixes
+
+- **qss**: New variant for QPushButton "title"
+  ([`ab75ef8`](https://github.com/bec-project/bec_qthemes/commit/ab75ef8c7094af6046cb5c96961eb006c2e323c9))
+
+
 ## v1.3.1 (2025-11-23)
 
 ### Bug Fixes
