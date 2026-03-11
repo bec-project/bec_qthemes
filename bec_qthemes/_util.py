@@ -9,6 +9,7 @@ import re
 from pathlib import Path
 
 import bec_qthemes
+from bec_lib.service_config import ServiceConfig
 
 # greater_equal and less_equal must be evaluated before greater and less.
 _OPERATORS = {"==": ope.eq, "!=": ope.ne, ">=": ope.ge, "<=": ope.le, ">": ope.gt, "<": ope.lt}
@@ -60,11 +61,10 @@ def get_cash_root_path(version: str) -> Path:
     the repository root so artifacts are local to the project checkout.
     Layout: <repo>/.cache/bec_qthemes/v<version>
     """
-    # Package root: .../bec_qthemes/bec_qthemes
-    pkg_root = Path(inspect.getfile(bec_qthemes)).parent
-    # Repo root: parent of the package folder
-    repo_root = pkg_root.parent
-    return repo_root / ".cache" / "bec_qthemes" / f"v{version}"
+    service_config = ServiceConfig(config_name="client")
+    default_path = Path(service_config.model.widgets_settings.base_path)
+    default_path = default_path.expanduser()  # Expand ~ to user home if present
+    return default_path / ".cache" / "bec_qthemes" / f"v{version}"
 
 
 def get_qthemes_root_path() -> Path:
