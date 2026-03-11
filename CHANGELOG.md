@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v1.3.4 (2026-03-11)
+
+### Bug Fixes
+
+- **cache**: Cache folder location fetched from ServiceConfig
+  ([`02cc92f`](https://github.com/bec-project/bec_qthemes/commit/02cc92f25663a2c6ba4b31360c5acf172b3a9019))
+
+### Build System
+
+- Added bec_lib
+  ([`14a3ff9`](https://github.com/bec-project/bec_qthemes/commit/14a3ff92dbf0fa841d8df56021d2dda4cb188e4e))
+
+
 ## v1.3.3 (2025-11-27)
 
 ### Bug Fixes
