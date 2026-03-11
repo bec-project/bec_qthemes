@@ -1366,7 +1366,10 @@ QFrame[variant="plot_background"][frameless="true"] {
 QFrame[variant="plot_background"] > * {
   border-radius: %%RADIUS_MEDIUM%%; /* prevent inner corners from peeking */
 }
-
+QFrame[variant="tile"] {
+  border: 1px solid %%BORDER%%;
+  border-radius: %%RADIUS_MEDIUM%%;
+}
 
 
 SideBar {
