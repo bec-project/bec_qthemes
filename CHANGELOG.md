@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.3.5 (2026-07-14)
+
+### Bug Fixes
+
+- **stylesheet**: Corrected LineEdits and TreeWidget cells
+  ([`ff7cd08`](https://github.com/bec-project/bec_qthemes/commit/ff7cd08ea325b2610379379a95bd619a50624288))
+
+
 ## v1.3.4 (2026-03-11)
 
 ### Bug Fixes
