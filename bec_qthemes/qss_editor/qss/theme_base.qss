@@ -137,6 +137,7 @@ QComboBox:editable QLineEdit {
   border: none;
   padding: 0;
   margin: 0;
+  min-height: 0;
   color: %%FG%%;
   selection-background-color: {{ PRIMARY }};
   selection-color: {{ ON_PRIMARY }};
@@ -145,7 +146,7 @@ QComboBox:editable QLineEdit {
 /* Drop-down button area */
 QComboBox::drop-down {
   subcontrol-origin: padding;
-  subcontrol-position: bottom right;
+  subcontrol-position: top right;
   width: 24px;
   border-left: 1px solid %%BORDER%%;
   margin: 2px 2px 2px 0;
@@ -189,7 +190,8 @@ QLineEdit {
   color: %%FG%%;
   border: 1px solid %%BORDER%%;
   border-radius: %%RADIUS_SMALL%%;
-  padding: 6px 10px;
+  padding: 3px 6px;
+  min-height: 20px;
   selection-background-color: {{ PRIMARY }};
   selection-color: {{ ON_PRIMARY }};
 }
@@ -209,9 +211,14 @@ QLineEdit[readOnly="true"] {
 }
 
 /* Clear button (shown only when clearButtonEnabled) */
-QLineEdit { padding-right: 28px; }
+QLineEdit[clearButtonEnabled="true"] {
+  padding-right: 26px;
+}
 QLineEdit::clear-button {
   image: {{ "close" | material_icon_url(size="16,16", color=FG) }};
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
 }
 QLineEdit::clear-button:hover { background: {{ PRIMARY_LIGHT }}; }
 
@@ -226,7 +233,7 @@ QPlainTextEdit, QTextEdit {
   color: %%FG%%;
   border: 1px solid %%BORDER%%;
   border-radius: %%RADIUS_SMALL%%;
-  padding: 6px 10px;
+  padding: 4px 6px;
   selection-background-color: {{ PRIMARY }};
   selection-color: {{ ON_PRIMARY }};
 }
@@ -248,18 +255,16 @@ QPlainTextEdit[state="error"], QTextEdit[state="error"]     { border-color: {{ A
 QPlainTextEdit[state="warning"], QTextEdit[state="warning"] { border-color: {{ ACCENT_WARNING }}; }
 QPlainTextEdit[state="success"], QTextEdit[state="success"] { border-color: {{ ACCENT_SUCCESS }}; }
 
-/* Completer & generic popup lists (QCompleter uses QListView/QTreeView) */
-/*QListView, QTreeView {*/
-/*  background: %%BG%%;*/
-/*  color: %%FG%%;*/
-/*  border: 1px solid %%BORDER%%;*/
-/*  outline: none;*/
-/*}*/
-/*QListView::item, QTreeView::item {*/
-/*  background: transparent;*/
-/*}*/
-/*QListView::item:hover, QTreeView::item:hover { background: {{ PRIMARY_LIGHT }}; color: {{ FG }}; }*/
-/*QListView::item:selected, QTreeView::item:selected { background: {{ PRIMARY }}; color: {{ FG }}; }*/
+/* Compact editors embedded in item views must fit inside delegate rows. */
+QTreeView QLineEdit,
+QTreeWidget QLineEdit,
+QTableView QLineEdit,
+QTableWidget QLineEdit,
+QListView QLineEdit {
+  padding: 1px 4px;
+  min-height: 0;
+  border-radius: 0;
+}
 
 /* --------------------------------------------------------------------- */
 /* Spin boxes (QAbstractSpinBox base: QSpinBox, QDoubleSpinBox, Date/Time) */
@@ -314,15 +319,14 @@ QCheckBox {
   color: %%FG%%;
   spacing: 6px;
 }
-QCheckBox:disabled { color: %%FG%% ;}
+QCheckBox:disabled { color: %%DISABLED_FG%%; }
 
 QCheckBox::indicator {
   width: 18px;
   height: 18px;
   border-radius: %%RADIUS_SMALL%%;
   border: 1px solid %%BORDER%%;
-  background: transparent;
-background:%%FIELD_BG%%;
+  background: %%FIELD_BG%%;
   margin-right: 6px;
 }
 QCheckBox::indicator:hover { border-color: {{ PRIMARY_LIGHT }}; }
@@ -726,10 +730,6 @@ QToolBox > QScrollArea > QWidget#qt_scrollarea_viewport {
 QToolBox::tab {
   background: %%CARD_BG%%;
   color: %%FG%%;
- }
-QToolBox::tab {
-  background: %%CARD_BG%%;
-  color: %%FG%%;
   border: 1px solid %%BORDER%%;
   border-radius: %%RADIUS_SMALL%%;
   padding: 6px 15px;
@@ -887,6 +887,37 @@ QAbstractScrollArea::corner {
 }
 
 /* --------------------------------------------------------------------- */
+/* ListView — compact popup/model lists -------------------------------- */
+/* --------------------------------------------------------------------- */
+QListView {
+  background: %%FIELD_BG%%;
+  color: %%FG%%;
+  border: 1px solid %%BORDER%%;
+  border-radius: %%RADIUS_SMALL%%;
+  outline: 0;
+  alternate-background-color: %%CARD_BG%%;
+  selection-background-color: {{ PRIMARY }};
+  selection-color: {{ ON_PRIMARY }};
+}
+
+QListView::item {
+  background: transparent;
+  border: none;
+  padding: 2px 6px;
+  min-height: 20px;
+}
+
+QListView::item:hover {
+  background: {{ PRIMARY_LIGHT }};
+  color: %%FG%%;
+}
+
+QListView::item:selected {
+  background: {{ PRIMARY }};
+  color: {{ ON_PRIMARY }};
+}
+
+/* --------------------------------------------------------------------- */
 /* TreeView & TreeWidget — elegant minimal ----------------------------- */
 /* --------------------------------------------------------------------- */
 QTreeView, QTreeWidget {
@@ -902,6 +933,7 @@ QTreeView::item, QTreeWidget::item {
   background: transparent;
   margin: 0;
   border: none;
+  min-height: 20px;
 }
 
 QTreeView::item:hover, QTreeWidget::item:hover {
