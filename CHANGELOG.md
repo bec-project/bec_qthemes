@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.3.6 (2026-10-02)
+
+### Bug Fixes
+
+- **deps**: Allow bec_lib v4
+  ([`6d478ea`](https://github.com/bec-project/bec_qthemes/commit/6d478eacdad881558d11e702587ba151eb5eedce))
+
+
 ## v1.3.5 (2026-07-14)
 
 ### Bug Fixes
