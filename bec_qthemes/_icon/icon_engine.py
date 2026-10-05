@@ -6,6 +6,34 @@ from bec_qthemes._color import Color
 from bec_qthemes._icon.svg_util import Svg
 
 
+def icon_from_engine(engine: QIconEngine) -> QIcon:
+    """
+    Create a QIcon from a Python icon engine that is safe to keep in reference cycles.
+
+    ``QIcon(engine)`` makes the engine a shiboken child of that particular Python ``QIcon``
+    wrapper, while the C++ ``QIcon`` owns the engine and deletes it with the last icon copy.
+    If the wrapper and its engine end up in cyclic garbage (e.g. an icon cached on a widget
+    that is collected by the GC), the collector may clear the engine first. Shiboken then
+    detaches it from its parent and hands its ownership back to Python, so the C++ engine is
+    deleted while the ``QIcon`` still points to it, and destroying the ``QIcon`` afterwards
+    crashes the interpreter (segfault in the ``QIcon`` destructor).
+
+    Returning a copy and dropping the wrapper created with the engine right away leaves the
+    engine to the C++ side only: shiboken keeps the Python engine alive, outside the GC's view,
+    until the last ``QIcon`` sharing it deletes the engine.
+
+    Args:
+        engine (QIconEngine): The engine to wrap. It must not be used directly afterwards.
+
+    Returns:
+        QIcon: An icon that renders through ``engine``.
+    """
+    owner = QIcon(engine)
+    icon = QIcon(owner)
+    del owner  # releases the parent/child link; the engine now lives as long as the C++ icons
+    return icon
+
+
 class SvgIconEngine(QIconEngine):
     """A custom QIconEngine that can render an SVG buffer."""
 

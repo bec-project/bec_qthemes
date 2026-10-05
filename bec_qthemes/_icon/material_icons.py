@@ -10,7 +10,7 @@ from qtpy.QtGui import QColor, QGuiApplication, QIcon, QPainter, QPalette, QPixm
 from qtpy.QtSvg import QSvgRenderer
 
 from bec_qthemes._color import Color
-from bec_qthemes._icon.icon_engine import SvgIconEngine
+from bec_qthemes._icon.icon_engine import SvgIconEngine, icon_from_engine
 from bec_qthemes._icon.svg_util import Svg
 
 if TYPE_CHECKING:
@@ -152,7 +152,7 @@ def material_icon(
     if color is not None:
         icon.color = color
     if not convert_to_pixmap:
-        return QIcon(icon)
+        return icon_from_engine(icon)
 
     if size is None:
         size = QSize(50, 50)
