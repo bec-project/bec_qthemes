@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v1.3.7 (2026-10-06)
+
+### Bug Fixes
+
+- **icons**: Hand cloned icon engines over to Qt
+  ([`af58bf9`](https://github.com/bec-project/bec_qthemes/commit/af58bf9c1bc3bcea0b712280acffd42a5fd63909))
+
+- **icons**: Keep Python icon engines out of cyclic garbage
+  ([`47fadda`](https://github.com/bec-project/bec_qthemes/commit/47faddaf32e8bd0571f47492b6421dbcc0ac8200))
+
+
 ## v1.3.6 (2026-10-02)
 
 ### Bug Fixes
