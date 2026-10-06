@@ -1,3 +1,7 @@
+import copy
+import ctypes
+
+from qtpy.compat import isalive
 from qtpy.QtCore import QPoint, QRect, QRectF, QSize, Qt
 from qtpy.QtGui import QGuiApplication, QIcon, QIconEngine, QImage, QPainter, QPalette, QPixmap
 from qtpy.QtSvg import QSvgRenderer
@@ -34,6 +38,35 @@ def icon_from_engine(engine: QIconEngine) -> QIcon:
     return icon
 
 
+# Engines returned from ``clone()`` that Qt owns but whose Python wrapper is still alive. The
+# list is never freed, not even when this module is torn down at interpreter exit: dropping it
+# then would delete engines that QIcons destroyed later still point to.
+_CPP_OWNED_ENGINES: list[QIconEngine] = []
+ctypes.pythonapi.Py_IncRef(ctypes.py_object(_CPP_OWNED_ENGINES))
+
+
+def _hand_over_to_cpp(engine: QIconEngine) -> QIconEngine:
+    """
+    Keep a Python engine alive until Qt deletes it.
+
+    ``QIconEngine.clone()`` is called by Qt, which takes ownership of the returned engine
+    (``QIcon::detach()`` stores it in a new private icon). PySide does not transfer ownership of
+    a virtual's return value, so the engine would be deleted as soon as Python drops its last
+    reference, leaving Qt with a dangling pointer: ``addPixmap``/``addFile``/``setIsMask`` on a
+    shared icon then segfault. Holding a reference here keeps the engine alive; when Qt deletes
+    it, shiboken invalidates the wrapper, and invalid wrappers are pruned on the next call.
+
+    Args:
+        engine (QIconEngine): A freshly created engine that is about to be returned to Qt.
+
+    Returns:
+        QIconEngine: ``engine``.
+    """
+    _CPP_OWNED_ENGINES[:] = [e for e in _CPP_OWNED_ENGINES if isalive(e)]
+    _CPP_OWNED_ENGINES.append(engine)
+    return engine
+
+
 class SvgIconEngine(QIconEngine):
     """A custom QIconEngine that can render an SVG buffer."""
 
@@ -58,9 +91,13 @@ class SvgIconEngine(QIconEngine):
         renderer = QSvgRenderer(svg_byte)  # type: ignore
         renderer.render(painter, QRectF(rect))
 
-    def clone(self):
-        """Required to subclass abstract QIconEngine."""
-        return SvgIconEngine(self._svg)
+    def clone(self) -> QIconEngine:
+        """Return a copy of this engine owned by Qt, used when a shared QIcon detaches."""
+        return _hand_over_to_cpp(self._copy())
+
+    def _copy(self) -> "SvgIconEngine":
+        """Return an independent engine that paints the same icon."""
+        return SvgIconEngine(copy.copy(self._svg))
 
     def pixmap(self, size: QSize, mode: QIcon.Mode, state: QIcon.State):
         """Return the icon as a pixmap with requested size, mode, and state."""
