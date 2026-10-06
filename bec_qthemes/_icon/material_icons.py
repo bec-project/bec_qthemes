@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import os
 from functools import lru_cache
@@ -60,6 +61,11 @@ class _MaterialIconEngine(SvgIconEngine):
         """Initialize icon engine."""
         super().__init__(svg)
         self.color = None
+
+    def _copy(self) -> _MaterialIconEngine:
+        engine = _MaterialIconEngine(copy.copy(self._svg))
+        engine.color = self.color
+        return engine
 
     def paint(self, painter: QPainter, rect: QRect, mode: QIcon.Mode, state):
         """Paint the icon int ``rect`` using ``painter``."""
